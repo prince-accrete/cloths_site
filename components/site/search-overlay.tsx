@@ -30,6 +30,7 @@ export function SearchOverlay() {
       label="Search the collection"
       className="search"
       backdrop={false}
+      variant="sheet"
     >
       <div className="search__top">
         <Link href="/" className="wordmark" onClick={close}>

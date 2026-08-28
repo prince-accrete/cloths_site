@@ -1,17 +1,40 @@
 'use client'
 
+import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+/** Matches --ease-out-expo / --ease-in-out-quint in globals.css §02. */
+const EASE_OUT = [0.16, 1, 0.3, 1] as const
+const EASE_IN_OUT = [0.83, 0, 0.17, 1] as const
+
+export type DialogMotion = 'drawer' | 'sheet'
+
+const VARIANTS: Record<DialogMotion, Variants> = {
+  // Right-hand panel: slides in fast, leaves slightly faster.
+  drawer: {
+    hidden: { x: '100%' },
+    visible: { x: 0, transition: { duration: 0.42, ease: EASE_OUT } },
+    exit: { x: '100%', transition: { duration: 0.3, ease: EASE_IN_OUT } },
+  },
+  // Full-surface search: settles down onto the page and lifts back off.
+  sheet: {
+    hidden: { opacity: 0, y: -14 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.32, ease: EASE_OUT } },
+    exit: { opacity: 0, y: -10, transition: { duration: 0.22, ease: EASE_IN_OUT } },
+  },
+}
 
 /**
  * Accessible modal wrapper: Escape to close, focus moved in on open and
  * restored on close, Tab cycled inside, background scroll locked, and the
  * whole thing announced as a dialog.
  *
- * The old build had none of this — the drawer and search overlay were plain
- * divs you could tab straight out of.
+ * AnimatePresence keeps the panel mounted through its exit transition — the
+ * previous version returned null on close, so both overlays slid in but
+ * vanished instantly.
  */
 export function DialogShell({
   open,
@@ -19,6 +42,7 @@ export function DialogShell({
   label,
   className,
   backdrop = true,
+  variant = 'drawer',
   children,
 }: {
   open: boolean
@@ -26,9 +50,11 @@ export function DialogShell({
   label: string
   className: string
   backdrop?: boolean
+  variant?: DialogMotion
   children: ReactNode
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
+  const reduceMotion = useReducedMotion()
 
   const focusables = useCallback(() => {
     const node = panelRef.current
@@ -85,21 +111,47 @@ export function DialogShell({
     }
   }, [open, onClose, focusables])
 
-  if (!open) return null
+  // Honour the OS setting: cross-fade only, no travel.
+  const variants: Variants = reduceMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.01 } },
+        exit: { opacity: 0, transition: { duration: 0.01 } },
+      }
+    : VARIANTS[variant]
 
   return (
-    <>
-      {backdrop && <div className="backdrop" onClick={onClose} aria-hidden="true" />}
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={label}
-        tabIndex={-1}
-        className={className}
-      >
-        {children}
-      </div>
-    </>
+    <AnimatePresence>
+      {open && (
+        <>
+          {backdrop && (
+            <motion.div
+              key="backdrop"
+              className="backdrop"
+              onClick={onClose}
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.32, ease: EASE_OUT } }}
+              exit={{ opacity: 0, transition: { duration: 0.24, ease: EASE_IN_OUT } }}
+            />
+          )}
+          <motion.div
+            key="panel"
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={label}
+            tabIndex={-1}
+            className={className}
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            {children}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   )
 }
