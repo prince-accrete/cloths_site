@@ -20,11 +20,12 @@ component/state model, and the responsive rules.
 | Fonts | **next/font** — Inter + Cormorant Garamond | ↺ rebuilt: self-hosted, zero layout shift |
 | Images | **next/image** | ↺ rebuilt: AVIF/WebP, `remotePatterns` for Unsplash |
 | Icons | **lucide-react** | |
+| Animation | **framer-motion** 13.1 | overlay exit transitions + grid stagger only; scroll reveals stay in CSS |
 | State | React Context + `useReducer` + `localStorage` | ↺ rebuilt: [lib/store.tsx](lib/store.tsx) |
 | Language | TypeScript 5.7, `strict: true` | ↺ rebuilt: `ignoreBuildErrors` removed — types are enforced |
 
-**Node ≥ 20.9 is required** (Next 16). This machine defaults to Node 16, so run
-`nvm use 22.21.1` before `pnpm dev`.
+**Node ≥ 20.9 is required** (Next 16); this machine runs 24.12.0. Dependencies are
+managed with **npm** — `package-lock.json` is the lockfile.
 
 ---
 
@@ -36,6 +37,7 @@ app/
   globals.css           the design system (§3)
   page.tsx              home
   shop/page.tsx         /shop — sort + wishlist via searchParams
+  shop/loading.tsx      skeleton for the dynamic shop route
   product/[id]/page.tsx /product/… — SSG, generateStaticParams + generateMetadata
   about/page.tsx        /about
   not-found.tsx         404
@@ -53,8 +55,9 @@ components/site/
   lookbook.tsx          client — cursor-following badge
   newsletter.tsx        client
   reveal.tsx            server — <Reveal> / <Lines> scroll-animation markers
+  stagger-grid.tsx      client — product-grid mount stagger (motion preset #8)
 lib/
-  products.ts           typed catalogue — sizes, fabric, 2 images per product
+  products.ts           typed catalogue — sizes, fabric, colour, 2 images per product
   store.tsx             cart + wishlist + overlay state, persisted
   utils.ts              cn()
 ```
@@ -296,7 +299,7 @@ plain divs.
 
 ---
 
-## 10b. Accessibility audit (WCAG)
+## 11. Accessibility audit (WCAG)
 
 Audited against the 45 critical/high web guidelines in the UI/UX Pro Max skill
 dataset, measured on the live build rather than read off the source.
@@ -326,62 +329,46 @@ link to the same destination.
 
 ---
 
-## 10c. The weight scrubber
+## 12. Grid stagger
 
-The one genuinely uncommon thing on this site, at the top of `/shop`.
-
-Every other tee store sorts by colour and size — the two least interesting
-axes. This brand's differentiator is fabric weight, which was sitting unused as
-a display string in the spec row. `lib/products.ts` now carries a numeric `gsm`
-and [weight-scrubber.tsx](components/site/weight-scrubber.tsx) makes it the
-primary way to shop.
-
-Drag the handle and the grid re-sorts by proximity to the chosen GSM, cards
-slide to their new positions, the nearest fabric is badged, and a band label
-("Featherweight" -> "Outerweight") plus a plain-language note explain what the
-number means.
-
-**Design rules it follows:**
-
-- **Nothing is ever hidden.** It sorts, never filters — novel interaction, but
-  a conventional funnel. No product becomes unreachable.
-- **Off by default.** `gsm` starts `null`, so the normal Featured view is
-  untouched until someone engages the control.
-- **The control depicts its subject.** The track is a wedge, thin at 160 GSM
-  and thick at 260 — clip-path, not an image.
-- **Native `<input type="range">` underneath.** Keyboard-operable, with
-  `aria-valuetext` announcing "200 GSM - Substantial. Holds its shape through
-  the day." The wedge and ticks are decoration layered behind it.
-- **Ticks sit at real product weights**, so you can feel where the line sits.
-
-Verified by driving it: at 165 GSM the order is Pima (160), Everyday (180),
-Essential (190), Ribbed (200), Studio (220), Heavyweight (260); at 260 it is
-the exact reverse.
-
-## 10d. Grid stagger
-
-Product grids use UI/UX Pro Max motion preset #8, "Stagger List" - `back.out(1.4)`,
-`scale 0.92 / y 16`, 0.06s stagger - implemented in Framer Motion rather than
+Product grids use UI/UX Pro Max motion preset #8, "Stagger List" — `back.out(1.4)`,
+`scale 0.92 / y 16`, 0.06s stagger — implemented in Framer Motion rather than
 pulling in GSAP; `[0.34, 1.56, 0.64, 1]` is the cubic equivalent of that
-overshoot ease. The shop grid replays it on every filter or sort change, which
-doubles as confirmation that the query applied.
+overshoot ease. See [stagger-grid.tsx](components/site/stagger-grid.tsx).
+
+The shop grid replays it on every filter or sort change, which doubles as
+confirmation that the query applied.
 
 Product cards deliberately lost their `data-reveal="media"` scroll unmask when
-this landed: the skill's `excessive-motion` rule caps a view at 1-2 animated
+this landed: the skill's `excessive-motion` rule caps a view at 1–2 animated
 elements, and the stagger is the stronger of the two.
 
 ---
 
-## 11. Running it
+## 13. Running it
 
 ```bash
-nvm use 22.21.1     # Next 16 needs Node >= 20.9
-pnpm install
-pnpm dev            # http://localhost:3000
-pnpm build && pnpm start
+npm install
+npm run dev            # http://localhost:3000
+npm run build && npm start
 ```
 
-## 12. What is still mock
+Requires **Node >= 20.9** (Next 16). This machine runs 24.12.0 via nvm4w; the
+project was migrated from pnpm to npm, so `package-lock.json` is the lockfile
+and `pnpm-lock.yaml` is gone.
+
+## 14. Removed by decision
+
+A fabric-weight (GSM) scrubber briefly led `/shop` — a slider that re-sorted the
+grid by proximity to a chosen gram weight. It was removed at the client's
+request: **size is the only axis this store sells on.** GSM is gone from the
+product model, the PDP spec row, the fabric bullets and the home editorial
+stats.
+
+Do not reintroduce it without asking. The grid stagger it shipped alongside
+(§12) was kept.
+
+## 15. What is still mock
 
 Honest list of what a real store would need next:
 
@@ -394,7 +381,7 @@ Honest list of what a real store would need next:
 
 ---
 
-## 13. Known-good verification
+## 16. Known-good verification
 
 Verified in headless Chrome 151 against the production build:
 

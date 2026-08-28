@@ -11,14 +11,11 @@ export function ProductCard({
   index = 0,
   sizes = '(max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw',
   priority = false,
-  match,
 }: {
   product: Product
   index?: number
   sizes?: string
   priority?: boolean
-  /** Set by the weight scrubber on the nearest fabric match. */
-  match?: string
 }) {
   const { isWished, toggleWish, add, hydrated } = useStore()
   const wished = hydrated && isWished(product.id)
@@ -35,11 +32,7 @@ export function ProductCard({
           {secondary && <Image src={secondary.src} alt="" fill sizes={sizes} aria-hidden="true" />}
         </Link>
 
-        {match ? (
-          <span className="product-card__badge product-card__badge--match">{match}</span>
-        ) : (
-          product.badge && <span className="product-card__badge">{product.badge}</span>
-        )}
+        {product.badge && <span className="product-card__badge">{product.badge}</span>}
 
         <button
           className="product-card__wish"

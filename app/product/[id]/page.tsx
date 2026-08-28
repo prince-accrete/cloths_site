@@ -79,7 +79,6 @@ export default async function ProductPage({ params }: Params) {
               <span className="swatch" style={{ background: product.swatch }} aria-hidden="true" />
               {product.color}
             </span>
-            <span>{product.weight}</span>
             <span>{product.fabric}</span>
           </div>
 

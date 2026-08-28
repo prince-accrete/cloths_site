@@ -54,22 +54,7 @@ export function StaggerGrid({
   )
 }
 
-export function StaggerItem({
-  children,
-  reorder = false,
-}: {
-  children: ReactNode
-  /** Animate this item sliding to a new grid position when the order changes. */
-  reorder?: boolean
-}) {
+export function StaggerItem({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion()
-  return (
-    <motion.div
-      variants={reduce ? ITEM_STILL : ITEM}
-      layout={reorder && !reduce ? 'position' : false}
-      transition={{ layout: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } }}
-    >
-      {children}
-    </motion.div>
-  )
+  return <motion.div variants={reduce ? ITEM_STILL : ITEM}>{children}</motion.div>
 }

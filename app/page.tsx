@@ -113,8 +113,8 @@ export default function HomePage() {
 
           <Reveal index={3} className="editorial__stats">
             <div className="editorial__stat">
-              <strong>160–260</strong>
-              <span className="eyebrow">GSM range</span>
+              <strong>XS–XXL</strong>
+              <span className="eyebrow">Every size</span>
             </div>
             <div className="editorial__stat">
               <strong>04</strong>

@@ -7,9 +7,6 @@ export type Product = {
   fit: 'Regular Fit' | 'Relaxed Fit' | 'Oversized'
   color: string
   swatch: string
-  weight: string
-  /** Numeric form of `weight` — drives the weight scrubber on /shop. */
-  gsm: number
   fabric: string
   images: { src: string; alt: string }[]
   tagline: string
@@ -29,14 +26,12 @@ export const products: Product[] = [
     fit: 'Regular Fit',
     color: 'Bone',
     swatch: '#e3ddd0',
-    weight: '260 GSM',
-    gsm: 260,
     fabric: 'Organic combed cotton',
     tagline: 'Structure that holds its shape.',
     description:
       'Our densest knit, cut to stand slightly away from the body. It arrives with weight and keeps it — the collar stays flat, the hem stays true, and the fabric softens without slumping.',
     details: [
-      '260 GSM organic combed cotton',
+      'Organic combed cotton',
       'Tubular body — no side seams to twist',
       'Twin-needle collarette, ribbed 2×1',
       'Garment-washed for zero first-wash shrink',
@@ -61,14 +56,12 @@ export const products: Product[] = [
     fit: 'Relaxed Fit',
     color: 'Optic White',
     swatch: '#f6f4ef',
-    weight: '180 GSM',
-    gsm: 180,
     fabric: 'Long-staple Supima cotton',
     tagline: 'The one that disappears into the rotation.',
     description:
       'Light enough to layer, opaque enough to wear alone. We spent four rounds on the shoulder drop alone — it should read relaxed without reading borrowed.',
     details: [
-      '180 GSM long-staple Supima cotton',
+      'Long-staple Supima cotton',
       'Dropped shoulder, 2cm below the natural line',
       'Single-needle hem for a flatter finish',
       'Reactive-dyed in small batches',
@@ -92,14 +85,12 @@ export const products: Product[] = [
     fit: 'Oversized',
     color: 'Washed Black',
     swatch: '#2a2825',
-    weight: '220 GSM',
-    gsm: 220,
     fabric: 'Pigment-dyed cotton jersey',
     tagline: 'More room. More presence.',
     description:
       'Cut wide through the chest and cropped a touch at the hem so the volume reads intentional. Pigment dyed, which means it will fade — slowly, unevenly, and in exactly your shape.',
     details: [
-      '220 GSM pigment-dyed cotton jersey',
+      'Pigment-dyed cotton jersey',
       'Boxy body, 4cm extended shoulder',
       'Wash cold — the fade is the point',
       'Pre-shrunk, holds its width',
@@ -124,14 +115,12 @@ export const products: Product[] = [
     fit: 'Regular Fit',
     color: 'Oat',
     swatch: '#d9cfbb',
-    weight: '160 GSM',
-    gsm: 160,
     fabric: 'Peruvian Pima cotton',
     tagline: 'Quietly the softest thing you own.',
     description:
       'Peruvian Pima, hand-picked and combed twice. The hand-feel is closer to silk than to jersey, and it holds a drape most cotton simply cannot.',
     details: [
-      '160 GSM Peruvian Pima cotton',
+      'Peruvian Pima cotton',
       'Combed twice for a low-pill surface',
       'Bound neckline, no visible topstitch',
       'Naturally resists fading',
@@ -155,14 +144,12 @@ export const products: Product[] = [
     fit: 'Relaxed Fit',
     color: 'Moss',
     swatch: '#6b7358',
-    weight: '200 GSM',
-    gsm: 200,
     fabric: 'Ribbed cotton-modal',
     tagline: 'Texture doing the talking.',
     description:
       'A fine 2×2 rib that follows the body without gripping it. The modal content gives it recovery, so it comes out of the wash the same shape it went in.',
     details: [
-      '200 GSM cotton-modal rib',
+      'Cotton-modal rib',
       '2×2 rib, fine gauge',
       'Four-way recovery — no bagging at the elbow',
       'Piece-dyed for depth of colour',
@@ -187,14 +174,12 @@ export const products: Product[] = [
     fit: 'Regular Fit',
     color: 'Charcoal',
     swatch: '#57554f',
-    weight: '190 GSM',
-    gsm: 190,
     fabric: 'Recycled cotton blend',
     tagline: 'Where the wardrobe starts.',
     description:
       'The baseline. Nothing on it, nothing in it that does not need to be there — which is precisely why it is the one that runs out first.',
     details: [
-      '190 GSM recycled cotton blend',
+      'Recycled cotton blend',
       '40% post-industrial reclaimed fibre',
       'Standard body, set-in sleeve',
       'Made in a Fair Wear audited facility',

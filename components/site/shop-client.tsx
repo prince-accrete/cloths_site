@@ -6,7 +6,6 @@ import { products, FITS } from '@/lib/products'
 import { useStore } from '@/lib/store'
 import { ProductCard } from './product-card'
 import { StaggerGrid, StaggerItem } from './stagger-grid'
-import { WeightScrubber } from './weight-scrubber'
 
 type Sort = 'featured' | 'low' | 'high' | 'new'
 
@@ -20,8 +19,6 @@ export function ShopClient({
   const { wishes, hydrated } = useStore()
   const [fits, setFits] = useState<string[]>([])
   const [sort, setSort] = useState<Sort>(initialSort)
-  /** null until the scrubber is touched, so it never hijacks the default view. */
-  const [gsm, setGsm] = useState<number | null>(null)
 
   const shown = useMemo(() => {
     let list = products
@@ -29,17 +26,11 @@ export function ShopClient({
     if (fits.length) list = list.filter((p) => fits.includes(p.fit))
 
     const sorted = [...list]
-    // The scrubber outranks the sort dropdown while engaged: order by how
-    // close each fabric is to the chosen weight. Nothing is filtered out.
-    if (gsm !== null) {
-      sorted.sort((a, b) => Math.abs(a.gsm - gsm) - Math.abs(b.gsm - gsm))
-      return sorted
-    }
     if (sort === 'low') sorted.sort((a, b) => a.price - b.price)
     if (sort === 'high') sorted.sort((a, b) => b.price - a.price)
     if (sort === 'new') sorted.sort((a, b) => Number(b.badge === 'New') - Number(a.badge === 'New'))
     return sorted
-  }, [fits, sort, wishlistOnly, wishes, gsm])
+  }, [fits, sort, wishlistOnly, wishes])
 
   const toggleFit = (fit: string) =>
     setFits((prev) => (prev.includes(fit) ? prev.filter((f) => f !== fit) : [...prev, fit]))
@@ -49,10 +40,6 @@ export function ShopClient({
 
   return (
     <>
-      {!wishlistOnly && (
-        <WeightScrubber value={gsm} onChange={setGsm} onReset={() => setGsm(null)} />
-      )}
-
       <div className="toolbar">
         <div className="toolbar__group" role="group" aria-label="Filter by fit">
           <span className="meta" style={{ letterSpacing: 'var(--track-ui)' }}>
@@ -93,13 +80,8 @@ export function ShopClient({
       {!loading && shown.length > 0 && (
         <StaggerGrid replayKey={`${fits.slice().sort().join('-')}|${sort}`}>
           {shown.map((product, i) => (
-            <StaggerItem key={product.id} reorder={gsm !== null}>
-              <ProductCard
-                product={product}
-                index={i % 4}
-                priority={i < 4}
-                match={gsm !== null && i === 0 ? `Closest to ${gsm} GSM` : undefined}
-              />
+            <StaggerItem key={product.id}>
+              <ProductCard product={product} index={i % 4} priority={i < 4} />
             </StaggerItem>
           ))}
         </StaggerGrid>
