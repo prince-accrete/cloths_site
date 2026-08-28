@@ -34,7 +34,7 @@ export function SearchOverlay() {
     >
       <div className="search__top">
         <Link href="/" className="wordmark" onClick={close}>
-          PURE PATH<sup>®</sup>
+          STILL FITS<sup>®</sup>
         </Link>
         <button className="icon-button" onClick={close} aria-label="Close search">
           <X size={20} />

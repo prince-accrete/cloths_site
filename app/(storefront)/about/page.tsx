@@ -8,7 +8,7 @@ import { Lines, Reveal } from '@/components/site/reveal'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Why Pure Path makes six T-shirts and nothing else.',
+  description: 'Why Still Fits makes six T-shirts and nothing else.',
 }
 
 const PRINCIPLES = [
@@ -41,7 +41,7 @@ export default function AboutPage() {
         <div className="page-head">
           <div className="section-head__title">
             <Reveal as="span" className="eyebrow">
-              Pure Path / Our point of view
+              Still Fits / Our point of view
             </Reveal>
             <h1 className="display display--md">
               <Lines lines={['Six T-shirts.', <em key="e">Nothing else.</em>]} enter />

@@ -27,7 +27,7 @@ type CartAction =
   | { type: 'toggleWish'; productId: string }
 
 const EMPTY: CartState = { lines: [], wishes: [] }
-const STORAGE_KEY = 'purepath.store.v1'
+const STORAGE_KEY = 'stillfits.store.v1'
 
 /* -------------------------------------------------------------- reducer -- */
 

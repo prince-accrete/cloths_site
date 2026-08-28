@@ -14,7 +14,7 @@ export function Newsletter() {
       </Reveal>
 
       <h2 className="display display--sm">
-        <Lines lines={['Join the world', <em key="e">of Pure Path.</em>]} />
+        <Lines lines={['Join the world', <em key="e">of Still Fits.</em>]} />
       </h2>
 
       {done ? (

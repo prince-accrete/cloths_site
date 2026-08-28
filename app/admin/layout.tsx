@@ -16,9 +16,9 @@ import './admin.css'
 export const metadata: Metadata = {
   title: {
     default: 'Admin',
-    template: '%s — Pure Path Admin',
+    template: '%s — Still Fits Admin',
   },
-  description: 'Pure Path store administration.',
+  description: 'Still Fits store administration.',
   // Nothing under /admin should ever be indexed.
   robots: { index: false, follow: false },
 }

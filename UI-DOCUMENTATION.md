@@ -1,4 +1,4 @@
-# Pure Path — UI Architecture
+# Still Fits — UI Architecture
 
 How the interface is built: the stack, the design tokens, the motion system, the
 component/state model, and the responsive rules.
@@ -258,7 +258,7 @@ smooth-scroll to `0.01ms`, and the scroll-driven blocks are additionally gated b
 ## 6. State & data
 
 All cart/wishlist/overlay state lives in [lib/store.tsx](lib/store.tsx) — a Context +
-`useReducer` store persisted to `localStorage` under `purepath.store.v1`.
+`useReducer` store persisted to `localStorage` under `stillfits.store.v1`.
 
 ```ts
 type CartLine = { productId: string; size: Size; qty: number }

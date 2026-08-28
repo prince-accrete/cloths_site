@@ -35,7 +35,7 @@ export function Footer() {
       <div className="footer__top">
         <div className="footer__brand">
           <Link href="/" className="wordmark">
-            PURE PATH<sup>®</sup>
+            STILL FITS<sup>®</sup>
           </Link>
           <p>Everyday, considered. Made in limited runs, restocked slowly.</p>
         </div>
@@ -55,7 +55,7 @@ export function Footer() {
       </div>
 
       <div className="footer__bottom">
-        <span>© {new Date().getFullYear()} Pure Path</span>
+        <span>© {new Date().getFullYear()} Still Fits</span>
         <span>Made for the long run</span>
       </div>
     </footer>

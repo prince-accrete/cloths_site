@@ -36,14 +36,14 @@ const mono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://pure-path.example'),
+  metadataBase: new URL('https://still-fits.example'),
   title: {
-    default: 'Pure Path — Essential, Elevated',
-    template: '%s — Pure Path',
+    default: 'Still Fits — Essential, Elevated',
+    template: '%s — Still Fits',
   },
   description: 'Premium everyday T-shirts, designed with intention.',
   openGraph: {
-    title: 'Pure Path — Essential, Elevated',
+    title: 'Still Fits — Essential, Elevated',
     description: 'Premium everyday T-shirts, designed with intention.',
     type: 'website',
   },

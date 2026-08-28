@@ -50,7 +50,7 @@ export function Nav() {
         </button>
 
         <Link href="/" className="wordmark">
-          PURE PATH<sup>®</sup>
+          STILL FITS<sup>®</sup>
         </Link>
 
         <nav className="nav__links" data-open={menuOpen} aria-label="Primary">

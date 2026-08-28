@@ -99,7 +99,7 @@ export default function HomePage() {
 
         <div className="editorial__copy">
           <Reveal as="span" className="eyebrow">
-            The Pure Path standard
+            The Still Fits standard
           </Reveal>
           <h2 className="display display--sm">
             <Lines lines={['Made for', <em key="e">every day.</em>]} />

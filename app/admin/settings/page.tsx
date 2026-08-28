@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/admin/page-header'
 export const metadata: Metadata = { title: 'Settings' }
 
 const ROWS = [
-  { label: 'Store name', value: 'Pure Path' },
+  { label: 'Store name', value: 'Still Fits' },
   { label: 'Currency', value: 'USD — duties included' },
   { label: 'Free shipping threshold', value: '$150' },
   { label: 'Returns window', value: '30 days' },

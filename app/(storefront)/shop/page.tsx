@@ -28,7 +28,7 @@ export default async function ShopPage({
         <div className="page-head">
           <div className="section-head__title">
             <Reveal as="span" className="eyebrow">
-              {wishlistOnly ? 'Pure Path / Saved' : 'Pure Path / T-shirts only'}
+              {wishlistOnly ? 'Still Fits / Saved' : 'Still Fits / T-shirts only'}
             </Reveal>
             <h1 className="display display--md">
               <Lines

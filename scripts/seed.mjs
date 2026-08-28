@@ -26,7 +26,7 @@ const seedInventory = (sizes, seed) =>
 
 const orders = [
   {
-    id: 'PP-2431',
+    id: 'SF-2431',
     placedAt: '2026-08-27T14:12:00.000Z',
     customer: { name: 'Ana Ferreira', email: 'ana.f@example.com' },
     status: 'pending',
@@ -36,14 +36,14 @@ const orders = [
     ],
   },
   {
-    id: 'PP-2430',
+    id: 'SF-2430',
     placedAt: '2026-08-27T09:48:00.000Z',
     customer: { name: 'Tomás Silva', email: 't.silva@example.com' },
     status: 'fulfilled',
     lines: [{ productId: 'studio', size: 'L', qty: 1, unitPrice: 62 }],
   },
   {
-    id: 'PP-2429',
+    id: 'SF-2429',
     placedAt: '2026-08-26T18:05:00.000Z',
     customer: { name: 'Iris Lindqvist', email: 'iris.l@example.com' },
     status: 'fulfilled',
@@ -54,14 +54,14 @@ const orders = [
     ],
   },
   {
-    id: 'PP-2428',
+    id: 'SF-2428',
     placedAt: '2026-08-26T11:30:00.000Z',
     customer: { name: 'Marco Bianchi', email: 'm.bianchi@example.com' },
     status: 'cancelled',
     lines: [{ productId: 'heavyweight', size: 'XXL', qty: 1, unitPrice: 68 }],
   },
   {
-    id: 'PP-2427',
+    id: 'SF-2427',
     placedAt: '2026-08-25T16:22:00.000Z',
     customer: { name: 'Yuki Tanaka', email: 'y.tanaka@example.com' },
     status: 'pending',

@@ -23,7 +23,7 @@ const FOCUSABLE =
  * Escape to close, a Tab focus trap, background scroll lock, and focus restored
  * to the trigger on close.
  *
- * Which order is open lives in the URL (`?order=PP-2431`) rather than in state,
+ * Which order is open lives in the URL (`?order=SF-2431`) rather than in state,
  * so a drawer is linkable, survives refresh, and the browser back button closes
  * it — the dashboard's activity feed links straight into it.
  */

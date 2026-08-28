@@ -12,7 +12,7 @@ export default function ShopLoading() {
 
       <div className="page-head">
         <div className="section-head__title">
-          <span className="eyebrow">Pure Path / T-shirts only</span>
+          <span className="eyebrow">Still Fits / T-shirts only</span>
           <h1 className="display display--md">Shop T-shirts.</h1>
         </div>
       </div>

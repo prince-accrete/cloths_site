@@ -35,7 +35,7 @@ const NAV: NavItem[] = [
   { href: '/admin/settings', label: 'Settings', icon: Settings },
 ]
 
-const STORAGE_KEY = 'purepath.admin.sidebar'
+const STORAGE_KEY = 'stillfits.admin.sidebar'
 
 export function AdminSidebar({
   mobileOpen,
@@ -118,7 +118,7 @@ export function AdminSidebar({
               PP
             </span>
             <span className="admin-mark__full">
-              PURE PATH<sup>®</sup>
+              STILL FITS<sup>®</sup>
             </span>
           </Link>
         </div>
@@ -170,7 +170,7 @@ export function AdminSidebar({
             >
               <div className="admin-sheet__head">
                 <span className="admin-mark__full">
-                  PURE PATH<sup>®</sup>
+                  STILL FITS<sup>®</sup>
                 </span>
                 <button
                   type="button"

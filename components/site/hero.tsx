@@ -20,7 +20,7 @@ export function Hero() {
 
       <div className="hero__copy">
         <span className="eyebrow eyebrow--light" data-enter="">
-          Pure Path / Chapter 01
+          Still Fits / Chapter 01
         </span>
 
         <h1 className="display display--lg hero__title">
