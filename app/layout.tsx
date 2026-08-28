@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
-import { Cormorant_Garamond, Inter } from 'next/font/google'
+import { Cormorant_Garamond, IBM_Plex_Mono, Inter } from 'next/font/google'
 import { StoreProvider } from '@/lib/store'
 import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
@@ -24,6 +24,16 @@ const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
   weight: ['300', '400'],
   style: ['normal', 'italic'],
+  display: 'swap',
+})
+
+/* Editorial-tech: every utility label, counter and metadata cluster is mono.
+   That contrast — expressive serif display against engineered mono labels —
+   is what separates this from a lifestyle-first layout. */
+const mono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  variable: '--font-plex-mono',
+  weight: ['400', '500'],
   display: 'swap',
 })
 
@@ -55,7 +65,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${mono.variable}`}>
       <body>
         <StoreProvider>
           <SmoothScroll />
@@ -63,6 +73,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <a href="#main" className="skip-link">
             Skip to content
           </a>
+
+          {/* Exposed grid structure — 6 column traces behind everything. */}
+          <div className="traces" aria-hidden="true">
+            {Array.from({ length: 6 }, (_, i) => (
+              <span key={i} />
+            ))}
+          </div>
 
           {/* Scroll progress spine — driven by a CSS scroll timeline, no JS. */}
           <div className="progress" aria-hidden="true">

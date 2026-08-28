@@ -44,6 +44,25 @@ export function Hero() {
         </div>
       </div>
 
+      <dl className="hero__spec" aria-label="Collection details">
+        <div>
+          <dt>Season</dt>
+          <dd>Spring 26</dd>
+        </div>
+        <div>
+          <dt>Styles</dt>
+          <dd>06</dd>
+        </div>
+        <div>
+          <dt>Sizes</dt>
+          <dd>XS–XXL</dd>
+        </div>
+        <div>
+          <dt>Made in</dt>
+          <dd>Portugal</dd>
+        </div>
+      </dl>
+
       <div className="hero__foot">
         <span className="hero__cue">
           Scroll to explore <ArrowDown size={13} />
