@@ -24,6 +24,15 @@
   --admin-rail-collapsed: 64px;
   --admin-gap: clamp(1rem, 1.6vw, 1.5rem);
 
+  /* Status traffic-light, per the UI/UX Pro Max profile for inventory tools:
+     "functional neutral + status traffic-light". Hues are pulled toward the
+     warm bone family rather than stock green/amber/red, and all three clear
+     4.5:1 on both --white and --paper-alt. Scoped to .admin so the storefront
+     palette stays two colours. */
+  --status-ok: #556f41;   /* moss  — 5.38 on white, 4.52 on paper-alt */
+  --status-warn: #86611f; /* amber — 5.37 / 4.51 */
+  --status-stop: #a4472f; /* rust  — the existing accent, 5.71 / 4.80 */
+
   display: grid;
   grid-template-columns: auto 1fr;
   min-height: 100dvh;
@@ -499,11 +508,11 @@
 }
 
 .admin-stat__delta[data-direction='up'] {
-  color: var(--accent);
+  color: var(--status-ok);
 }
 
 .admin-stat__delta[data-direction='down'] {
-  color: var(--ink-soft);
+  color: var(--status-stop);
 }
 
 .admin-split {
@@ -720,15 +729,24 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Low stock is marked by an accent rule and an underline, not colour alone. */
+/* Low stock adds a rule AND an underline, so it never depends on colour. */
 .admin-stock__cell[data-low] {
-  border-color: var(--accent);
+  border-color: var(--status-warn);
 }
 
 .admin-stock__cell[data-low] i {
-  color: var(--accent);
+  color: var(--status-warn);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+.admin-stock__cell[data-out] {
+  border-color: var(--status-stop);
+}
+
+.admin-stock__cell[data-out] i {
+  color: var(--status-stop);
+  text-decoration: line-through;
 }
 
 .admin-pill {
@@ -742,19 +760,38 @@
   white-space: nowrap;
 }
 
+.admin-pill::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 0.45em;
+  vertical-align: 0.1em;
+  background: currentColor;
+}
+
 .admin-pill[data-tone='positive'] {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--white);
+  border-color: var(--status-ok);
+  color: var(--status-ok);
 }
 
 .admin-pill[data-tone='warning'] {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--status-warn);
+  color: var(--status-warn);
+}
+
+.admin-pill[data-tone='danger'] {
+  border-color: var(--status-stop);
+  color: var(--status-stop);
 }
 
 .admin-pill[data-tone='muted'] {
   color: var(--muted);
+}
+
+.admin-pill[data-tone='muted']::before {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--muted);
 }
 
 .admin-empty {

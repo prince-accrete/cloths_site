@@ -30,6 +30,13 @@ export type Order = {
   lines: OrderLine[]
 }
 
+/** Traffic-light tone per status — one mapping, used by every view. */
+export const ORDER_STATUS_TONE: Record<OrderStatus, 'positive' | 'warning' | 'danger'> = {
+  pending: 'warning',
+  fulfilled: 'positive',
+  cancelled: 'danger',
+}
+
 export const ORDER_STATUS_LABEL: Record<OrderStatus, string> = {
   pending: 'Pending',
   fulfilled: 'Fulfilled',

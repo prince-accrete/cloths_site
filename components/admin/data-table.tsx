@@ -86,12 +86,18 @@ export function DataTable<T>({
   )
 }
 
-/** Status pill. `tone` maps to a colour in admin.css — never colour alone. */
+/**
+ * Status pill.
+ *
+ * Colour is an addition to the label, never a replacement: the text always
+ * states the status, and the leading dot gives a second non-colour cue. Tones
+ * map to the traffic-light tokens in admin.css §01.
+ */
 export function StatusPill({
   tone,
   children,
 }: {
-  tone: 'neutral' | 'positive' | 'warning' | 'muted'
+  tone: 'neutral' | 'positive' | 'warning' | 'danger' | 'muted'
   children: ReactNode
 }) {
   return (

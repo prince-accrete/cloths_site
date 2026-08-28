@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { ORDER_STATUS_LABEL, orderTotal, type Order } from '@/lib/admin/types'
+import { ORDER_STATUS_LABEL, ORDER_STATUS_TONE, orderTotal, type Order } from '@/lib/admin/types'
 import { setOrderStatusAction } from '@/lib/admin/actions'
 import { StatusPill } from './data-table'
 
@@ -153,11 +153,7 @@ export function OrderDrawer({
 
             <footer className="admin-drawer__foot">
               <span className="admin-eyebrow">Status</span>
-              <StatusPill
-                tone={
-                  order.status === 'fulfilled' ? 'positive' : order.status === 'pending' ? 'warning' : 'muted'
-                }
-              >
+              <StatusPill tone={ORDER_STATUS_TONE[order.status]}>
                 {ORDER_STATUS_LABEL[order.status]}
               </StatusPill>
 

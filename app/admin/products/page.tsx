@@ -65,9 +65,11 @@ const columns: Column<AdminProduct>[] = [
             <span
               key={size}
               className="admin-stock__cell"
-              data-low={qty <= LOW_STOCK_THRESHOLD || undefined}
-              // Colour alone never carries the warning.
-              title={`${size}: ${qty} in stock${qty <= LOW_STOCK_THRESHOLD ? ' — low' : ''}`}
+              data-low={qty > 0 && qty <= LOW_STOCK_THRESHOLD || undefined}
+              data-out={qty === 0 || undefined}
+              // Colour alone never carries the warning — the tooltip and the
+              // underline / strike-through say it too.
+              title={`${size}: ${qty === 0 ? 'out of stock' : `${qty} in stock${qty <= LOW_STOCK_THRESHOLD ? ' — low' : ''}`}`}
             >
               <b>{size}</b>
               <i>{qty}</i>

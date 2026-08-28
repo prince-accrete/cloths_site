@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { listOrders, listProducts } from '@/lib/admin/store'
-import { ORDER_STATUS_LABEL, orderTotal, type Order } from '@/lib/admin/types'
+import { ORDER_STATUS_LABEL, ORDER_STATUS_TONE, orderTotal, type Order } from '@/lib/admin/types'
 import { DataTable, StatusPill, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
 import { OrderDrawer } from '@/components/admin/order-drawer'
@@ -61,11 +61,7 @@ const columns: Column<Order>[] = [
     align: 'end',
     width: '112px',
     cell: (o) => (
-      <StatusPill
-        tone={o.status === 'fulfilled' ? 'positive' : o.status === 'pending' ? 'warning' : 'muted'}
-      >
-        {ORDER_STATUS_LABEL[o.status]}
-      </StatusPill>
+      <StatusPill tone={ORDER_STATUS_TONE[o.status]}>{ORDER_STATUS_LABEL[o.status]}</StatusPill>
     ),
   },
 ]

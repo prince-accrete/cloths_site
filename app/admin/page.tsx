@@ -5,6 +5,7 @@ import { listOrders, listProducts } from '@/lib/admin/store'
 import {
   LOW_STOCK_THRESHOLD,
   ORDER_STATUS_LABEL,
+  ORDER_STATUS_TONE,
   lowStockSizes,
   orderTotal,
 } from '@/lib/admin/types'
@@ -108,15 +109,7 @@ export default function AdminDashboard() {
                 <Link href={`/admin/orders?order=${order.id}`} className="admin-feed__row">
                   <span className="admin-feed__id">{order.id}</span>
                   <span className="admin-feed__who">{order.customer.name}</span>
-                  <StatusPill
-                    tone={
-                      order.status === 'fulfilled'
-                        ? 'positive'
-                        : order.status === 'pending'
-                          ? 'warning'
-                          : 'muted'
-                    }
-                  >
+                  <StatusPill tone={ORDER_STATUS_TONE[order.status]}>
                     {ORDER_STATUS_LABEL[order.status]}
                   </StatusPill>
                   <span className="admin-feed__when">{when(order.placedAt)}</span>
