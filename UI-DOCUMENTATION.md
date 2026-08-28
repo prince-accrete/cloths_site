@@ -21,6 +21,7 @@ component/state model, and the responsive rules.
 | Images | **next/image** | ↺ rebuilt: AVIF/WebP, `remotePatterns` for Unsplash |
 | Icons | **lucide-react** | |
 | Animation | **framer-motion** 13.1 | overlay exit transitions + grid stagger only; scroll reveals stay in CSS |
+| Smooth scroll | **lenis** | the site's sole scroll engine; dynamically imported, bypassed under reduced motion |
 | State | React Context + `useReducer` + `localStorage` | ↺ rebuilt: [lib/store.tsx](lib/store.tsx) |
 | Language | TypeScript 5.7, `strict: true` | ↺ rebuilt: `ignoreBuildErrors` removed — types are enforced |
 
@@ -54,7 +55,8 @@ components/site/
   dialog-shell.tsx      client — focus trap, Escape, scroll lock, restore focus
   lookbook.tsx          client — cursor-following badge
   newsletter.tsx        client
-  reveal.tsx            server — <Reveal> / <Lines> scroll-animation markers
+  reveal.tsx            server — <Reveal> / <Lines> line- and word-level splits
+  smooth-scroll.tsx     client — Lenis, the one scroll engine
   stagger-grid.tsx      client — product-grid mount stagger (motion preset #8)
 lib/
   products.ts           typed catalogue — sizes, fabric, colour, 2 images per product
@@ -165,6 +167,55 @@ animations (Firefox today) renders the page complete and static rather than blan
 
 Also scroll-driven: the **hero parallax + fade** (`scroll(root)`), and the **progress
 spine** on the left edge — a 2px rule that scales with document scroll, zero JS.
+
+### 4.2b Curves and durations
+
+Values come from Emil Kowalski's `animate` skill. **Never hand-roll a
+cubic-bezier** — take it from easing.dev.
+
+```css
+--ease-out:    cubic-bezier(0.23, 1, 0.32, 1);    /* entering / exiting */
+--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);   /* moving on screen   */
+--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);    /* iOS-like drawer    */
+```
+
+Never `ease-in` on UI — it starts slow at exactly the moment the user is
+watching. The older `--ease-out-expo` / `--ease-in-out-quint` names are kept as
+aliases of these, so every existing call site was retuned without a rename
+sweep (extend the tokens, don't fork them).
+
+Duration budgets — **UI stays under 300ms**:
+
+| Element | Token | Value |
+|---|---|---|
+| Press feedback | `--dur-press` | 130ms |
+| Hover | `--dur-hover` | 180ms |
+| Dropdown / popover | `--dur-pop` | 220ms |
+| Drawer / modal | `--dur-drawer` | 380ms |
+| Editorial media only | `--dur-media` | 600ms |
+
+Image hovers previously ran at **900ms** and link underlines at 420ms. Sluggish
+hover is one of the loudest signals of an uncrafted interface; those are now
+600ms (decorative media) and 180–220ms (affordances).
+
+In Framer Motion, animate the **full transform string**, never the `x`/`y`/
+`scale` shorthands — the shorthands are not hardware-accelerated and drop
+frames under load.
+
+### 4.2c Smooth scroll
+
+[smooth-scroll.tsx](components/site/smooth-scroll.tsx) runs **Lenis** and
+nothing else. Two engines fight over the same scroll position, so exactly one
+is installed.
+
+Lenis smooths the *native* scroll position rather than transforming a wrapper,
+which is why the CSS scroll timelines in §4.1 keep working untouched —
+verified: the progress spine reads `scaleY(0)` at the top and `scaleY(0.571)`
+at mid-page with Lenis active.
+
+It is dynamically imported (never in the initial bundle, never on the server)
+and skipped entirely under `prefers-reduced-motion`, with a `change` listener
+so flipping the OS setting mid-session takes effect.
 
 ### 4.3 `@property`
 
@@ -392,7 +443,13 @@ Verified in headless Chrome 151 against the production build:
   internals, which are intentionally wide and clipped by their `overflow: hidden` parent.
 - All routes return 200; `/nope` returns 404.
 
-Two capture caveats if you screenshot this yourself: plain `chrome --screenshot` does
+**Since Lenis landed, `--virtual-time-budget` is unusable.** Its continuous
+`requestAnimationFrame` loop stalls Chrome's virtual clock, so the page is
+captured at t≈0 with every entrance animation at its start state — the hero
+appears blank. Drive CDP with real `setTimeout` waits instead. This cost real
+time to diagnose; it is not a regression.
+
+Two further capture caveats: plain `chrome --screenshot` does
 not wait for image decode (images drop out at random), so pass
 `--run-all-compositor-stages-before-draw`; and CDP's `captureBeyondViewport` paints
 `position: fixed` elements at their scroll offset, so the nav and skip link appear

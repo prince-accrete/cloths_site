@@ -6,24 +6,28 @@ import { useCallback, useEffect, useRef, type ReactNode } from 'react'
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-/** Matches --ease-out-expo / --ease-in-out-quint in globals.css §02. */
-const EASE_OUT = [0.16, 1, 0.3, 1] as const
-const EASE_IN_OUT = [0.83, 0, 0.17, 1] as const
+/** Mirrors --ease-out / --ease-drawer in globals.css §02 (Emil Kowalski's
+ *  `animate` skill). Never hand-roll a curve — take it from easing.dev. */
+const EASE_OUT = [0.23, 1, 0.32, 1] as const
+const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const
+const EASE_DRAWER = [0.32, 0.72, 0, 1] as const
 
 export type DialogMotion = 'drawer' | 'sheet'
 
 const VARIANTS: Record<DialogMotion, Variants> = {
   // Right-hand panel: slides in fast, leaves slightly faster.
+  // Full transform strings, not the x/y/scale shorthands — the shorthands
+  // are not hardware-accelerated and drop frames while the page is busy.
   drawer: {
-    hidden: { x: '100%' },
-    visible: { x: 0, transition: { duration: 0.42, ease: EASE_OUT } },
-    exit: { x: '100%', transition: { duration: 0.3, ease: EASE_IN_OUT } },
+    hidden: { transform: 'translateX(100%)' },
+    visible: { transform: 'translateX(0%)', transition: { duration: 0.38, ease: EASE_DRAWER } },
+    exit: { transform: 'translateX(100%)', transition: { duration: 0.26, ease: EASE_IN_OUT } },
   },
   // Full-surface search: settles down onto the page and lifts back off.
   sheet: {
-    hidden: { opacity: 0, y: -14 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.32, ease: EASE_OUT } },
-    exit: { opacity: 0, y: -10, transition: { duration: 0.22, ease: EASE_IN_OUT } },
+    hidden: { opacity: 0, transform: 'translateY(-14px)' },
+    visible: { opacity: 1, transform: 'translateY(0px)', transition: { duration: 0.22, ease: EASE_OUT } },
+    exit: { opacity: 0, transform: 'translateY(-10px)', transition: { duration: 0.18, ease: EASE_IN_OUT } },
   },
 }
 
@@ -131,8 +135,8 @@ export function DialogShell({
               onClick={onClose}
               aria-hidden="true"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 0.32, ease: EASE_OUT } }}
-              exit={{ opacity: 0, transition: { duration: 0.24, ease: EASE_IN_OUT } }}
+              animate={{ opacity: 1, transition: { duration: 0.24, ease: EASE_OUT } }}
+              exit={{ opacity: 0, transition: { duration: 0.2, ease: EASE_IN_OUT } }}
             />
           )}
           <motion.div

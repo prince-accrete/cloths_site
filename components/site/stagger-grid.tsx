@@ -16,11 +16,16 @@ import type { ReactNode } from 'react'
  * filters or sort change. That doubles as feedback that the query applied.
  */
 
-const EASE_BACK = [0.34, 1.56, 0.64, 1] as const
+const EASE_BACK = [0.34, 1.56, 0.64, 1] as const // back.out(1.4) equivalent
 
+// Full transform string, not the scale/y shorthands — see dialog-shell.tsx.
 const ITEM: Variants = {
-  hidden: { opacity: 0, scale: 0.92, y: 16 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: EASE_BACK } },
+  hidden: { opacity: 0, transform: 'translateY(16px) scale(0.92)' },
+  visible: {
+    opacity: 1,
+    transform: 'translateY(0px) scale(1)',
+    transition: { duration: 0.4, ease: EASE_BACK },
+  },
 }
 
 const ITEM_STILL: Variants = { hidden: { opacity: 1 }, visible: { opacity: 1 } }

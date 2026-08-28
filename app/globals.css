@@ -96,12 +96,28 @@
   /* Geometry — the design is rectilinear by decision, not by omission */
   --radius: 0;
 
-  /* Motion */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
-  --ease-out-soft: cubic-bezier(0.33, 1, 0.68, 1);
-  --dur-fast: 220ms;
-  --dur-mid: 420ms;
+  /* Motion — curves and durations from Emil Kowalski's `animate` skill.
+     Do not hand-roll new cubic-beziers; take them from easing.dev. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* entering / exiting */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* moving on screen */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-like drawer */
+
+  /* Existing names alias the new curves so every call site is retuned
+     without a rename sweep (extend the tokens, don't fork them). */
+  --ease-out-expo: var(--ease-out);
+  --ease-in-out-quint: var(--ease-in-out);
+  --ease-out-soft: ease; /* hover / colour change */
+
+  /* Budgets: press 100-160, popover 125-200, dropdown 150-250,
+     drawer 200-500. UI stays under 300ms. */
+  --dur-press: 130ms;
+  --dur-hover: 180ms;
+  --dur-pop: 220ms;
+  --dur-drawer: 380ms;
+  --dur-fast: var(--dur-hover);
+  --dur-mid: var(--dur-pop);
+  /* Editorial media only — never an interactive affordance. */
+  --dur-media: 600ms;
   --dur-slow: 800ms;
 
   /* Depth */
@@ -538,13 +554,13 @@ button {
   letter-spacing: var(--track-ui);
   white-space: nowrap;
   transition:
-    --fill var(--dur-mid) var(--ease-out-expo),
-    color var(--dur-fast) var(--ease-out-soft),
-    opacity var(--dur-fast) linear;
+    --fill var(--dur-pop) var(--ease-out),
+    color var(--dur-hover) var(--ease-out-soft),
+    opacity var(--dur-hover) linear;
 }
 
 .button svg {
-  transition: transform var(--dur-mid) var(--ease-out-expo);
+  transition: transform var(--dur-hover) var(--ease-out);
 }
 
 .button:hover svg {
@@ -609,7 +625,7 @@ button {
   height: 1px;
   background: currentColor;
   transform-origin: right;
-  transition: transform var(--dur-mid) var(--ease-in-out-quint);
+  transition: transform var(--dur-pop) var(--ease-in-out);
 }
 
 .text-link:hover::after {
@@ -618,7 +634,7 @@ button {
 }
 
 .text-link svg {
-  transition: transform var(--dur-mid) var(--ease-out-expo);
+  transition: transform var(--dur-hover) var(--ease-out);
 }
 
 .text-link:hover svg {
@@ -773,7 +789,7 @@ button {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--dur-mid) var(--ease-in-out-quint);
+  transition: transform var(--dur-pop) var(--ease-in-out);
 }
 
 .nav__link:hover::after,
@@ -908,6 +924,22 @@ button {
   display: block;
 }
 
+/* Word-level stagger (<Lines words />). Each word is its own clipped mask, so
+   the line rises in pieces rather than as one block. */
+.line:has(> .word) {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.24em;
+}
+
+.word {
+  display: inline-block;
+  overflow: hidden;
+  /* Descenders would otherwise be clipped by the mask. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
 .hero__lede {
   color: rgba(251, 250, 247, 0.86);
   max-width: 26ch;
@@ -983,7 +1015,7 @@ button {
   height: 100%;
   object-fit: cover;
   filter: saturate(0.82);
-  transition: transform 900ms var(--ease-out-expo), filter var(--dur-slow) linear;
+  transition: transform var(--dur-media) var(--ease-out), filter var(--dur-media) linear;
 }
 
 .tile:hover img {
@@ -1077,7 +1109,7 @@ button {
   height: 100%;
   object-fit: cover;
   filter: saturate(0.74);
-  transition: transform 900ms var(--ease-out-expo), filter var(--dur-slow) linear;
+  transition: transform var(--dur-media) var(--ease-out), filter var(--dur-media) linear;
 }
 
 .fit:hover .fit__media img {
@@ -1109,7 +1141,7 @@ button {
 .fit__body svg {
   grid-column: 2;
   grid-row: 1 / span 2;
-  transition: transform var(--dur-mid) var(--ease-out-expo);
+  transition: transform var(--dur-hover) var(--ease-out);
 }
 
 .fit:hover .fit__body svg {
@@ -1379,9 +1411,9 @@ button {
   object-fit: cover;
   filter: saturate(0.78);
   transition:
-    transform 900ms var(--ease-out-expo),
+    transform var(--dur-media) var(--ease-out),
     opacity var(--dur-mid) var(--ease-out-soft),
-    filter var(--dur-slow) linear;
+    filter var(--dur-media) linear;
 }
 
 /* Second image cross-fades in on hover — the standard fashion-retail move,
@@ -1445,8 +1477,8 @@ button {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity var(--dur-mid) var(--ease-out-expo),
-    transform var(--dur-mid) var(--ease-out-expo);
+    opacity var(--dur-pop) var(--ease-out),
+    transform var(--dur-pop) var(--ease-out);
 }
 
 .product-card:hover .quick-add,
@@ -1793,7 +1825,7 @@ button {
 }
 
 .accordion summary svg {
-  transition: transform var(--dur-mid) var(--ease-out-expo);
+  transition: transform var(--dur-pop) var(--ease-out);
   flex-shrink: 0;
 }
 
@@ -2027,7 +2059,7 @@ button {
   border-bottom: 1px solid var(--line);
   animation: rise-in var(--dur-mid) var(--ease-out-expo) both;
   animation-delay: calc(var(--i, 0) * 45ms);
-  transition: padding-inline var(--dur-mid) var(--ease-out-expo);
+  transition: padding-inline var(--dur-hover) var(--ease-out);
 }
 
 .search__result:hover {
@@ -2092,7 +2124,7 @@ button {
     color: var(--ink);
     border-bottom: 1px solid var(--line);
     transform: translateY(-101%);
-    transition: transform var(--dur-mid) var(--ease-in-out-quint);
+    transition: transform var(--dur-drawer) var(--ease-drawer);
   }
 
   .nav__links[data-open='true'] {

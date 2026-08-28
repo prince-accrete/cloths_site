@@ -6,6 +6,7 @@ import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
 import { CartDrawer } from '@/components/site/cart-drawer'
 import { SearchOverlay } from '@/components/site/search-overlay'
+import { SmoothScroll } from '@/components/site/smooth-scroll'
 import './globals.css'
 
 /* The two faces the whole design rests on. The previous build named them in
@@ -57,6 +58,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <body>
         <StoreProvider>
+          <SmoothScroll />
+
           <a href="#main" className="skip-link">
             Skip to content
           </a>

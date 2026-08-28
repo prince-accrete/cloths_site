@@ -24,7 +24,13 @@ export function Hero() {
         </span>
 
         <h1 className="display display--lg hero__title">
-          <Lines lines={['Essential.', <em key="e">Elevated.</em>]} enter start={1} />
+          <Lines
+            lines={['Essential.', <em key="e">Elevated.</em>]}
+            enter
+            start={1}
+            words
+            label="Essential. Elevated."
+          />
         </h1>
 
         <p className="hero__lede" data-enter="" style={{ '--i': 3 } as React.CSSProperties}>
