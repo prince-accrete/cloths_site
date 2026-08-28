@@ -296,6 +296,36 @@ plain divs.
 
 ---
 
+## 10b. Accessibility audit (WCAG)
+
+Audited against the 45 critical/high web guidelines in the UI/UX Pro Max skill
+dataset, measured on the live build rather than read off the source.
+
+**Fixed:**
+
+| Finding | Was | Now |
+|---|---|---|
+| 1.4.3 Contrast — `--muted` | 3.96:1 on paper, **3.59:1** on paper-alt | `#6b6760` → 4.99 / 4.52 |
+| 1.4.3 Contrast — `--muted-dim` | **2.45:1**, used for placeholders | `#8a8377`, 3.33 / 3.02, now **large text only**; placeholders moved to `--muted` |
+| 2.4.11 Focus Not Obscured | fixed nav could cover focused content | `scroll-padding-top: 6rem` |
+| 2.5.8 Target Size | 18 targets under 24px | 6, all covered by the *Equivalent* exception |
+| Readable font size | sort `<select>` at **9px** → iOS zoom-on-focus | 16px under 860px |
+| Loading feedback | `/shop` is dynamic with no loading state | `app/shop/loading.tsx` skeleton matching the grid geometry |
+
+The `.toolbar select` fix needed the selector named explicitly — `class + element`
+outranks a bare `select` rule inside the media query, so the generic rule silently
+did nothing.
+
+**Verified passing:** viewport meta (`width=device-width, initial-scale=1` — Next
+still emits it alongside a custom `viewport` export), no horizontal overflow at
+390px, all form controls >= 16px, every image loading.
+
+**Accepted, not fixed:** six product-name links are 17px tall. WCAG 2.5.8's
+*Equivalent* exception applies — the card image directly above is a much larger
+link to the same destination.
+
+---
+
 ## 11. Running it
 
 ```bash

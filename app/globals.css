@@ -53,8 +53,11 @@
   /* Ink */
   --ink: #14130f;
   --ink-soft: #46443c;
-  --muted: #7b776e;
-  --muted-dim: #a09b91;
+  /* WCAG 1.4.3: --muted must clear 4.5:1 on BOTH --paper and the darker
+     --paper-alt (it carries eyebrows, product meta, captions, footer links).
+     --muted-dim is a decorative tier for large numerals only — 3:1. */
+  --muted: #6b6760; /* 4.99 on paper, 4.52 on paper-alt */
+  --muted-dim: #8a8377; /* 3.33 / 3.02 — large text only, never body copy */
 
   /* Line */
   --line: #d8d3c8;
@@ -142,6 +145,8 @@
 html {
   background: var(--paper);
   scroll-behavior: smooth;
+  /* WCAG 2.4.11 — the nav is fixed, so keep focused/anchored content clear of it. */
+  scroll-padding-top: 6rem;
   /* Stops layout shifting when an overlay hides the scrollbar. */
   scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
@@ -1262,7 +1267,7 @@ button {
 }
 
 .newsletter__form input::placeholder {
-  color: var(--muted-dim);
+  color: var(--muted);
 }
 
 .newsletter__ok {
@@ -1313,6 +1318,8 @@ button {
 }
 
 .footer__col a {
+  display: inline-block;
+  padding-block: 0.25rem; /* WCAG 2.5.8 — 18px text alone is under the 24px minimum */
   font-size: var(--step--1);
   color: var(--ink-soft);
   transition: color var(--dur-fast) var(--ease-out-soft);
@@ -1511,6 +1518,35 @@ button {
   margin-right: 0.4rem;
 }
 
+/* Skeletons for app/shop/loading.tsx. Geometry mirrors the real card so
+   nothing shifts when the content swaps in. */
+.skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--paper-alt) 0%,
+    var(--paper-deep) 50%,
+    var(--paper-alt) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s var(--ease-out-soft) infinite;
+}
+
+.skeleton--line {
+  height: 0.7rem;
+}
+
+.skeleton--chip {
+  width: 5rem;
+  height: 1.7rem;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 /* -- 12  Shop ------------------------------------------------------------- */
 
 .page-head {
@@ -1565,6 +1601,7 @@ button {
 
 .toolbar select {
   border: 0;
+  padding-block: 0.25rem; /* WCAG 2.5.8 — clears the 24px minimum */
   background: transparent;
   font-size: 0.5625rem;
   text-transform: uppercase;
@@ -1696,7 +1733,7 @@ button {
 }
 
 .size-grid button:disabled {
-  color: var(--muted-dim);
+  color: var(--muted);
   cursor: not-allowed;
   background:
     repeating-linear-gradient(
@@ -1880,6 +1917,8 @@ button {
 }
 
 .link-quiet {
+  display: inline-block;
+  padding-block: 0.3rem; /* WCAG 2.5.8 — 'Size guide' was 49x16 */
   font-size: 0.625rem;
   color: var(--muted);
   text-decoration: underline;
@@ -1971,7 +2010,7 @@ button {
 }
 
 .search__field input::placeholder {
-  color: var(--muted-dim);
+  color: var(--muted);
 }
 
 .search__results {
@@ -2026,6 +2065,17 @@ button {
 }
 
 @media (max-width: 860px) {
+  /* Under 16px, iOS Safari zooms the page on focus and does not zoom back.
+     Applies to selects too, which is why the toolbar sort control grows here. */
+  input,
+  select,
+  textarea,
+  .toolbar select {
+    /* .toolbar select is class+element, so it outranks a bare `select`
+       selector here — it has to be named explicitly or it stays at 9px. */
+    font-size: 1rem;
+  }
+
   .nav__burger {
     display: inline-flex;
   }
