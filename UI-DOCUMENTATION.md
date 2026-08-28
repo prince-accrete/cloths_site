@@ -326,6 +326,52 @@ link to the same destination.
 
 ---
 
+## 10c. The weight scrubber
+
+The one genuinely uncommon thing on this site, at the top of `/shop`.
+
+Every other tee store sorts by colour and size — the two least interesting
+axes. This brand's differentiator is fabric weight, which was sitting unused as
+a display string in the spec row. `lib/products.ts` now carries a numeric `gsm`
+and [weight-scrubber.tsx](components/site/weight-scrubber.tsx) makes it the
+primary way to shop.
+
+Drag the handle and the grid re-sorts by proximity to the chosen GSM, cards
+slide to their new positions, the nearest fabric is badged, and a band label
+("Featherweight" -> "Outerweight") plus a plain-language note explain what the
+number means.
+
+**Design rules it follows:**
+
+- **Nothing is ever hidden.** It sorts, never filters — novel interaction, but
+  a conventional funnel. No product becomes unreachable.
+- **Off by default.** `gsm` starts `null`, so the normal Featured view is
+  untouched until someone engages the control.
+- **The control depicts its subject.** The track is a wedge, thin at 160 GSM
+  and thick at 260 — clip-path, not an image.
+- **Native `<input type="range">` underneath.** Keyboard-operable, with
+  `aria-valuetext` announcing "200 GSM - Substantial. Holds its shape through
+  the day." The wedge and ticks are decoration layered behind it.
+- **Ticks sit at real product weights**, so you can feel where the line sits.
+
+Verified by driving it: at 165 GSM the order is Pima (160), Everyday (180),
+Essential (190), Ribbed (200), Studio (220), Heavyweight (260); at 260 it is
+the exact reverse.
+
+## 10d. Grid stagger
+
+Product grids use UI/UX Pro Max motion preset #8, "Stagger List" - `back.out(1.4)`,
+`scale 0.92 / y 16`, 0.06s stagger - implemented in Framer Motion rather than
+pulling in GSAP; `[0.34, 1.56, 0.64, 1]` is the cubic equivalent of that
+overshoot ease. The shop grid replays it on every filter or sort change, which
+doubles as confirmation that the query applied.
+
+Product cards deliberately lost their `data-reveal="media"` scroll unmask when
+this landed: the skill's `excessive-motion` rule caps a view at 1-2 animated
+elements, and the stagger is the stronger of the two.
+
+---
+
 ## 11. Running it
 
 ```bash

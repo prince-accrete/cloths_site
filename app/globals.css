@@ -1547,6 +1547,173 @@ button {
   }
 }
 
+/* Weight scrubber — shop by hand-feel (components/site/weight-scrubber.tsx).
+   The wedge is thin at 160 GSM and thick at 260, so the control physically
+   depicts the thing it selects. */
+
+.scrubber {
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--line);
+}
+
+.scrubber__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.scrubber__readout {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.scrubber__readout strong {
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+.scrubber__unit {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.scrubber__readout em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.scrubber__prompt {
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  color: var(--muted);
+  letter-spacing: 0;
+}
+
+.scrubber__control {
+  position: relative;
+  height: 4.5rem;
+}
+
+.scrubber__wedge {
+  position: absolute;
+  inset: 0 0 1.9rem;
+  background: var(--paper-deep);
+  /* Thin left, thick right — 160 GSM to 260 GSM. */
+  clip-path: polygon(0 44%, 100% 8%, 100% 92%, 0 56%);
+  transition: background var(--dur-mid) var(--ease-out-soft);
+}
+
+.scrubber[data-active='true'] .scrubber__wedge {
+  background: linear-gradient(90deg, var(--paper-deep), var(--accent-tint));
+}
+
+.scrubber__ticks {
+  position: absolute;
+  inset: 0 0 0;
+  pointer-events: none;
+}
+
+.scrubber__tick {
+  position: absolute;
+  top: 0;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+}
+
+.scrubber__tick i {
+  display: block;
+  width: 1px;
+  height: 2.6rem;
+  background: var(--line-strong);
+  transition: background var(--dur-fast) var(--ease-out-soft);
+}
+
+.scrubber__tick b {
+  font-size: 0.5625rem;
+  font-weight: 400;
+  letter-spacing: var(--track-ui);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out-soft);
+}
+
+.scrubber__tick[data-near='true'] i {
+  background: var(--accent);
+}
+
+.scrubber__tick[data-near='true'] b {
+  color: var(--accent);
+}
+
+/* The native range sits on top, invisible but fully operable. */
+.scrubber__range {
+  position: absolute;
+  inset: 0 0 1.9rem;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: ew-resize;
+}
+
+.scrubber__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 2px;
+  height: 3.4rem;
+  background: var(--ink);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 0 0 5px var(--paper);
+  cursor: ew-resize;
+}
+
+.scrubber__range::-moz-range-thumb {
+  width: 2px;
+  height: 3.4rem;
+  background: var(--ink);
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 0 0 5px var(--paper);
+  cursor: ew-resize;
+}
+
+.scrubber__range:focus-visible {
+  outline: none;
+}
+
+.scrubber__range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 7px var(--accent);
+}
+
+.scrubber__range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 7px var(--accent);
+}
+
+.scrubber__note {
+  min-height: 1.4em;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+.product-card__badge--match {
+  background: var(--accent);
+  color: var(--white);
+}
+
 /* -- 12  Shop ------------------------------------------------------------- */
 
 .page-head {
@@ -2190,6 +2357,17 @@ button {
 }
 
 @media (max-width: 560px) {
+  /* Six tick labels collide at this width. Keep every mark, but label only
+     the two ends — the readout above already names the exact value. */
+  .scrubber__tick:not(:first-child):not(:last-child) b {
+    display: none;
+  }
+
+  .scrubber__readout {
+    flex-wrap: wrap;
+    row-gap: 0.2rem;
+  }
+
   .hero__foot .hero__chapter {
     display: none;
   }

@@ -6,6 +6,7 @@ import { ArrowLeft, Plus } from 'lucide-react'
 import { getProduct, products } from '@/lib/products'
 import { BuyPanel } from '@/components/site/buy-panel'
 import { ProductCard } from '@/components/site/product-card'
+import { StaggerGrid, StaggerItem } from '@/components/site/stagger-grid'
 import { Newsletter } from '@/components/site/newsletter'
 import { Reveal } from '@/components/site/reveal'
 
@@ -134,11 +135,13 @@ export default async function ProductPage({ params }: Params) {
           </div>
         </div>
 
-        <div className="product-grid">
-          {related.map((item, i) => (
-            <ProductCard key={item.id} product={item} index={i} />
+        <StaggerGrid>
+          {related.map((item) => (
+            <StaggerItem key={item.id}>
+              <ProductCard product={item} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </section>
 
       <Newsletter />

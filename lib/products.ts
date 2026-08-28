@@ -8,6 +8,8 @@ export type Product = {
   color: string
   swatch: string
   weight: string
+  /** Numeric form of `weight` — drives the weight scrubber on /shop. */
+  gsm: number
   fabric: string
   images: { src: string; alt: string }[]
   tagline: string
@@ -28,6 +30,7 @@ export const products: Product[] = [
     color: 'Bone',
     swatch: '#e3ddd0',
     weight: '260 GSM',
+    gsm: 260,
     fabric: 'Organic combed cotton',
     tagline: 'Structure that holds its shape.',
     description:
@@ -59,6 +62,7 @@ export const products: Product[] = [
     color: 'Optic White',
     swatch: '#f6f4ef',
     weight: '180 GSM',
+    gsm: 180,
     fabric: 'Long-staple Supima cotton',
     tagline: 'The one that disappears into the rotation.',
     description:
@@ -89,6 +93,7 @@ export const products: Product[] = [
     color: 'Washed Black',
     swatch: '#2a2825',
     weight: '220 GSM',
+    gsm: 220,
     fabric: 'Pigment-dyed cotton jersey',
     tagline: 'More room. More presence.',
     description:
@@ -120,6 +125,7 @@ export const products: Product[] = [
     color: 'Oat',
     swatch: '#d9cfbb',
     weight: '160 GSM',
+    gsm: 160,
     fabric: 'Peruvian Pima cotton',
     tagline: 'Quietly the softest thing you own.',
     description:
@@ -150,6 +156,7 @@ export const products: Product[] = [
     color: 'Moss',
     swatch: '#6b7358',
     weight: '200 GSM',
+    gsm: 200,
     fabric: 'Ribbed cotton-modal',
     tagline: 'Texture doing the talking.',
     description:
@@ -181,6 +188,7 @@ export const products: Product[] = [
     color: 'Charcoal',
     swatch: '#57554f',
     weight: '190 GSM',
+    gsm: 190,
     fabric: 'Recycled cotton blend',
     tagline: 'Where the wardrobe starts.',
     description:

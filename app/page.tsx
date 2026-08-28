@@ -8,6 +8,7 @@ import { Lookbook } from '@/components/site/lookbook'
 import { Newsletter } from '@/components/site/newsletter'
 import { ProductCard } from '@/components/site/product-card'
 import { Lines, Reveal } from '@/components/site/reveal'
+import { StaggerGrid, StaggerItem } from '@/components/site/stagger-grid'
 
 const FITS = [
   {
@@ -188,11 +189,13 @@ export default function HomePage() {
           </Reveal>
         </div>
 
-        <div className="product-grid">
-          {products.slice(0, 4).map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
+        <StaggerGrid>
+          {products.slice(0, 4).map((product) => (
+            <StaggerItem key={product.id}>
+              <ProductCard product={product} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGrid>
       </section>
 
       <Lookbook />

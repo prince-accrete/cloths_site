@@ -11,11 +11,14 @@ export function ProductCard({
   index = 0,
   sizes = '(max-width: 860px) 50vw, (max-width: 1100px) 33vw, 25vw',
   priority = false,
+  match,
 }: {
   product: Product
   index?: number
   sizes?: string
   priority?: boolean
+  /** Set by the weight scrubber on the nearest fabric match. */
+  match?: string
 }) {
   const { isWished, toggleWish, add, hydrated } = useStore()
   const wished = hydrated && isWished(product.id)
@@ -23,13 +26,20 @@ export function ProductCard({
 
   return (
     <article className="product-card" style={{ '--i': index } as React.CSSProperties}>
-      <div className="product-card__media" data-reveal="media">
+      {/* No data-reveal here: the grid stagger (stagger-grid.tsx) already
+          animates this card. Stacking both breaks the excessive-motion rule
+          of 1-2 animated elements per view. */}
+      <div className="product-card__media">
         <Link href={`/product/${product.id}`} aria-label={product.name}>
           <Image src={primary.src} alt={primary.alt} fill sizes={sizes} priority={priority} />
           {secondary && <Image src={secondary.src} alt="" fill sizes={sizes} aria-hidden="true" />}
         </Link>
 
-        {product.badge && <span className="product-card__badge">{product.badge}</span>}
+        {match ? (
+          <span className="product-card__badge product-card__badge--match">{match}</span>
+        ) : (
+          product.badge && <span className="product-card__badge">{product.badge}</span>
+        )}
 
         <button
           className="product-card__wish"
