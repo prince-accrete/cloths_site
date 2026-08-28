@@ -119,10 +119,6 @@ export function listOrders(): Order[] {
   return orders
 }
 
-export function getOrder(id: string) {
-  return orders.find((o) => o.id === id)
-}
-
 export function setOrderStatus(id: string, status: Order['status']) {
   const order = orders.find((o) => o.id === id)
   if (order) order.status = status

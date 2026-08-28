@@ -913,26 +913,6 @@ main,
   z-index: 1;
 }
 
-/* Framed panels — exposed borders, per the 2026 editorial-tech read. */
-.framed {
-  border: 1px solid var(--line);
-}
-
-/* Section rules with a technical marker at the left edge. */
-.rule--marked {
-  position: relative;
-}
-
-.rule--marked::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: -3px;
-  width: 1px;
-  height: 7px;
-  background: var(--accent);
-}
-
 /* -- 10  Home sections ---------------------------------------------------- */
 
 .hero {

@@ -1,4 +1,4 @@
-﻿export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
+export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
 
 export type Product = {
   id: string
@@ -202,9 +202,5 @@ export const FITS = ['Regular Fit', 'Relaxed Fit', 'Oversized'] as const
 
 export function getProduct(id: string) {
   return products.find((p) => p.id === id)
-}
-
-export function formatPrice(cents: number) {
-  return `$${cents}`
 }
 
