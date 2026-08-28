@@ -6,11 +6,14 @@ import { getAdminProduct } from '@/lib/admin/store'
 import { PageHeader } from '@/components/admin/page-header'
 import { ProductForm } from '@/components/admin/product-form'
 
+// Reads MongoDB per request — never prerendered at build time.
+export const dynamic = 'force-dynamic'
+
 type Params = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params
-  const product = getAdminProduct(id)
+  const product = await getAdminProduct(id)
   return { title: product ? product.name : 'Product' }
 }
 
@@ -36,7 +39,7 @@ export default async function AdminProductPage({ params }: Params) {
     )
   }
 
-  const product = getAdminProduct(id)
+  const product = await getAdminProduct(id)
   if (!product) notFound()
 
   return (

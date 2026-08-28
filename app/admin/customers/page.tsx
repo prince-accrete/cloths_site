@@ -3,9 +3,12 @@ import { listCustomers } from '@/lib/admin/store'
 import { DataTable, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
 
+// Reads MongoDB per request — never prerendered at build time.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = { title: 'Customers' }
 
-type Row = ReturnType<typeof listCustomers>[number]
+type Row = Awaited<ReturnType<typeof listCustomers>>[number]
 
 const columns: Column<Row>[] = [
   {
@@ -29,8 +32,8 @@ const columns: Column<Row>[] = [
   },
 ]
 
-export default function AdminCustomersPage() {
-  const rows = listCustomers()
+export default async function AdminCustomersPage() {
+  const rows = await listCustomers()
   return (
     <>
       <PageHeader

@@ -13,6 +13,9 @@ import {
 import { DataTable, StatusPill, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
 
+// Reads MongoDB per request — never prerendered at build time.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = { title: 'Products' }
 
 const columns: Column<AdminProduct>[] = [
@@ -101,8 +104,8 @@ const columns: Column<AdminProduct>[] = [
   },
 ]
 
-export default function AdminProductsPage() {
-  const rows = listProducts()
+export default async function AdminProductsPage() {
+  const rows = await listProducts()
   const active = rows.filter((p) => p.status === 'active').length
 
   return (

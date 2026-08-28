@@ -65,7 +65,7 @@ export async function saveProductAction(
     return { ok: false, message: 'Fix the highlighted fields.', errors }
   }
 
-  const saved = updateProduct(id, {
+  const saved = await updateProduct(id, {
     name,
     price,
     fit,
@@ -94,7 +94,7 @@ export async function setOrderStatusAction(formData: FormData) {
   const id = String(formData.get('id') ?? '')
   const status = String(formData.get('status') ?? '') as OrderStatus
   if (!['pending', 'fulfilled', 'cancelled'].includes(status)) return
-  setOrderStatus(id, status)
+  await setOrderStatus(id, status)
   revalidatePath('/admin/orders')
   revalidatePath('/admin')
 }

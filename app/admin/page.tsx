@@ -13,6 +13,9 @@ import { PageHeader } from '@/components/admin/page-header'
 import { StatCard } from '@/components/admin/stat-card'
 import { StatusPill } from '@/components/admin/data-table'
 
+// Reads MongoDB per request — never prerendered at build time.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = { title: 'Dashboard' }
 
 const money = (n: number) => `$${n.toLocaleString('en-US')}`
@@ -21,9 +24,9 @@ const when = (iso: string) =>
   new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
     .format(new Date(iso))
 
-export default function AdminDashboard() {
-  const orders = listOrders()
-  const products = listProducts()
+// Reads the database, so this route is server-rendered per request.
+export default async function AdminDashboard() {
+  const [orders, products] = await Promise.all([listOrders(), listProducts()])
 
   const revenue = orders
     .filter((o) => o.status !== 'cancelled')

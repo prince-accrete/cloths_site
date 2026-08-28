@@ -7,6 +7,9 @@ import { DataTable, StatusPill, type Column } from '@/components/admin/data-tabl
 import { PageHeader } from '@/components/admin/page-header'
 import { OrderDrawer } from '@/components/admin/order-drawer'
 
+// Reads MongoDB per request — never prerendered at build time.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = { title: 'Orders' }
 
 const date = (iso: string) =>
@@ -66,13 +69,13 @@ const columns: Column<Order>[] = [
   },
 ]
 
-export default function AdminOrdersPage() {
-  const orders = listOrders()
+export default async function AdminOrdersPage() {
+  const orders = await listOrders()
   const pending = orders.filter((o) => o.status === 'pending').length
 
   // Flat lookup so the client drawer never needs the full catalogue.
   const productLookup = Object.fromEntries(
-    listProducts().map((p) => [
+    (await listProducts()).map((p) => [
       p.id,
       { name: p.name, image: p.images[0].src, href: `/admin/products/${p.id}` },
     ]),
