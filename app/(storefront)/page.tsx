@@ -92,8 +92,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Editorial */}
-      <section className="editorial">
+      {/* Editorial — the page's dark anchor, between two light sections. */}
+      <section className="editorial on-ink">
         <div className="editorial__media">
           <Image
             src="https://images.unsplash.com/photo-1666358084687-14347fbf364c?w=1600&q=88"
@@ -178,7 +178,7 @@ export default async function HomePage() {
       </section>
 
       {/* 03 — Best sellers */}
-      <section className="section section--tight shell">
+      <section className="section section--tight section--raised shell">
         <div className="section-head">
           <div className="section-head__title">
             <Reveal as="span" className="eyebrow">

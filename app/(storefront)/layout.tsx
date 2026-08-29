@@ -29,6 +29,10 @@ export default async function StorefrontLayout({ children }: { children: React.R
         Skip to content
       </a>
 
+      {/* Film grain. One fixed layer for the whole document — see globals.css
+          section 18 for why it is fixed rather than per-section. */}
+      <div className="grain" aria-hidden="true" />
+
       {/* Exposed grid structure — 6 column traces behind everything. */}
       <div className="traces" aria-hidden="true">
         {Array.from({ length: 6 }, (_, i) => (
