@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "seed": "node --experimental-strip-types scripts/seed.mjs"
+    "seed": "node --experimental-strip-types scripts/seed.mjs",
+    "create-admin": "node --experimental-strip-types --import ./scripts/alias-hook.mjs scripts/create-admin.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "1.6.1",
+    "better-auth": "^1.7.2",
     "framer-motion": "^13.1.1",
     "lenis": "^1.3.26",
     "lucide-react": "^1.16.0",

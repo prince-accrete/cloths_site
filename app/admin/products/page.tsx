@@ -12,6 +12,7 @@ import {
 } from '@/lib/admin/types'
 import { DataTable, StatusPill, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
+import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
 export const dynamic = 'force-dynamic'
@@ -105,6 +106,8 @@ const columns: Column<AdminProduct>[] = [
 ]
 
 export default async function AdminProductsPage() {
+  await requireAdmin()
+
   const rows = await listProducts()
   const active = rows.filter((p) => p.status === 'active').length
 

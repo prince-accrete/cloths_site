@@ -12,6 +12,7 @@ import {
 import { PageHeader } from '@/components/admin/page-header'
 import { StatCard } from '@/components/admin/stat-card'
 import { StatusPill } from '@/components/admin/data-table'
+import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
 export const dynamic = 'force-dynamic'
@@ -26,6 +27,8 @@ const when = (iso: string) =>
 
 // Reads the database, so this route is server-rendered per request.
 export default async function AdminDashboard() {
+  await requireAdmin()
+
   const [orders, products] = await Promise.all([listOrders(), listProducts()])
 
   const revenue = orders

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { listCustomers } from '@/lib/admin/store'
 import { DataTable, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
+import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
 export const dynamic = 'force-dynamic'
@@ -33,6 +34,8 @@ const columns: Column<Row>[] = [
 ]
 
 export default async function AdminCustomersPage() {
+  await requireAdmin()
+
   const rows = await listCustomers()
   return (
     <>

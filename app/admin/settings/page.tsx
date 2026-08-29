@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/admin/page-header'
+import { requireAdmin } from '@/lib/auth-guard'
 
 export const metadata: Metadata = { title: 'Settings' }
 
@@ -11,7 +12,9 @@ const ROWS = [
   { label: 'Low stock threshold', value: '6 units' },
 ]
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
+  await requireAdmin()
+
   return (
     <>
       <PageHeader eyebrow="Configuration" title="Settings" meta="Store-wide defaults" />

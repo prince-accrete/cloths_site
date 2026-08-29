@@ -6,6 +6,7 @@ import { ORDER_STATUS_LABEL, ORDER_STATUS_TONE, orderTotal, type Order } from '@
 import { DataTable, StatusPill, type Column } from '@/components/admin/data-table'
 import { PageHeader } from '@/components/admin/page-header'
 import { OrderDrawer } from '@/components/admin/order-drawer'
+import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
 export const dynamic = 'force-dynamic'
@@ -70,6 +71,8 @@ const columns: Column<Order>[] = [
 ]
 
 export default async function AdminOrdersPage() {
+  await requireAdmin()
+
   const orders = await listOrders()
   const pending = orders.filter((o) => o.status === 'pending').length
 

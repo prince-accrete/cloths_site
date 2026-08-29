@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { getAdminProduct } from '@/lib/admin/store'
 import { PageHeader } from '@/components/admin/page-header'
 import { ProductForm } from '@/components/admin/product-form'
+import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function AdminProductPage({ params }: Params) {
+  await requireAdmin()
+
   const { id } = await params
 
   // `/admin/products/new` is reserved for the create flow, which needs a

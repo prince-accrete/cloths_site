@@ -7,6 +7,7 @@ import type { Inventory, OrderStatus, ProductStatus } from './types'
 // A 'use server' module may only export async functions, so the state shape
 // and its initial value live in a plain module.
 import type { FormState } from './form-state'
+import { getAdminSession } from '@/lib/auth-guard'
 
 const FITS = ['Regular Fit', 'Relaxed Fit', 'Oversized'] as const
 
@@ -21,6 +22,12 @@ export async function saveProductAction(
   _prev: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  // Server actions are independently callable HTTP endpoints — middleware and
+  // the page guard do not protect them. This check is the one that counts.
+  if (!(await getAdminSession())) {
+    return { ok: false, message: 'Not authorised.', errors: {} }
+  }
+
   const id = String(formData.get('id') ?? '')
   const errors: Record<string, string> = {}
 
@@ -91,6 +98,8 @@ export async function saveProductAction(
 }
 
 export async function setOrderStatusAction(formData: FormData) {
+  if (!(await getAdminSession())) return
+
   const id = String(formData.get('id') ?? '')
   const status = String(formData.get('status') ?? '') as OrderStatus
   if (!['pending', 'fulfilled', 'cancelled'].includes(status)) return
