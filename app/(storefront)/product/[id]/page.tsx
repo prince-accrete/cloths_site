@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Plus } from 'lucide-react'
-import { getProduct, products } from '@/lib/products'
+import { getActiveProduct, listActiveProducts } from '@/lib/admin/store'
 import { BuyPanel } from '@/components/site/buy-panel'
 import { ProductCard } from '@/components/site/product-card'
 import { StaggerGrid, StaggerItem } from '@/components/site/stagger-grid'
@@ -12,13 +12,9 @@ import { Reveal } from '@/components/site/reveal'
 
 type Params = { params: Promise<{ id: string }> }
 
-export function generateStaticParams() {
-  return products.map((p) => ({ id: p.id }))
-}
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params
-  const product = getProduct(id)
+  const product = await getActiveProduct(id)
   if (!product) return { title: 'Not found' }
   return {
     title: product.name,
@@ -33,10 +29,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Params) {
   const { id } = await params
-  const product = getProduct(id)
+  const product = await getActiveProduct(id)
   if (!product) notFound()
 
-  const related = products.filter((p) => p.id !== product.id).slice(0, 4)
+  const related = (await listActiveProducts()).filter((p) => p.id !== product.id).slice(0, 4)
 
   return (
     <>

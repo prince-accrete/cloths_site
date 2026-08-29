@@ -88,11 +88,14 @@ export async function saveProductAction(
     return { ok: false, message: 'That product no longer exists.', errors: {} }
   }
 
-  // The storefront reads the same catalogue, so refresh both sides.
   revalidatePath('/admin/products')
   revalidatePath(`/admin/products/${id}`)
-  revalidatePath('/shop')
-  revalidatePath(`/product/${id}`)
+
+  // The storefront reads the same catalogue. The home page is statically
+  // prerendered and the layout caches the product list for every storefront
+  // route, so revalidating the layout is what actually makes an edit visible —
+  // revalidating the individual paths is not enough.
+  revalidatePath('/', 'layout')
 
   return { ok: true, message: `Saved “${saved.name}”.`, errors: {} }
 }

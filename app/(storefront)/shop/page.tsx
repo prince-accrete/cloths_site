@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Marquee } from '@/components/site/marquee'
 import { Newsletter } from '@/components/site/newsletter'
 import { ShopClient } from '@/components/site/shop-client'
+import { listActiveProducts } from '@/lib/admin/store'
 import { Lines, Reveal } from '@/components/site/reveal'
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default async function ShopPage({
 }: {
   searchParams: Promise<{ sort?: string; view?: string }>
 }) {
-  const params = await searchParams
+  const [params, products] = await Promise.all([searchParams, listActiveProducts()])
   const wishlistOnly = params.view === 'wishlist'
   const sort = SORTS.includes(params.sort as Sort) ? (params.sort as Sort) : 'featured'
 
@@ -44,7 +45,7 @@ export default async function ShopPage({
           </Reveal>
         </div>
 
-        <ShopClient initialSort={sort} wishlistOnly={wishlistOnly} />
+        <ShopClient products={products} initialSort={sort} wishlistOnly={wishlistOnly} />
       </div>
 
       <div style={{ marginTop: 'var(--section-y)' }}>

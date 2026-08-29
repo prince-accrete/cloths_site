@@ -4,14 +4,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Search, X } from 'lucide-react'
-import { products } from '@/lib/products'
 import { useStore } from '@/lib/store'
 import { DialogShell } from './dialog-shell'
 
 const SUGGESTIONS = ['Heavyweight', 'Oversized', 'Bone', 'Moss', 'Pima']
 
 export function SearchOverlay() {
-  const { searchOpen, setSearchOpen } = useStore()
+  // Same catalogue snapshot the cart uses — no second source of truth.
+  const { searchOpen, setSearchOpen, products } = useStore()
   const [query, setQuery] = useState('')
   const close = () => setSearchOpen(false)
 
@@ -21,7 +21,7 @@ export function SearchOverlay() {
     return products.filter((p) =>
       [p.name, p.color, p.fit, p.fabric].some((field) => field.toLowerCase().includes(q)),
     )
-  }, [query])
+  }, [query, products])
 
   return (
     <DialogShell

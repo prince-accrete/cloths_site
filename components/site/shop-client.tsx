@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import { products, FITS } from '@/lib/products'
+import { FITS, type Product } from '@/lib/products'
 import { useStore } from '@/lib/store'
 import { ProductCard } from './product-card'
 import { StaggerGrid, StaggerItem } from './stagger-grid'
@@ -10,9 +10,12 @@ import { StaggerGrid, StaggerItem } from './stagger-grid'
 type Sort = 'featured' | 'low' | 'high' | 'new'
 
 export function ShopClient({
+  products,
   initialSort = 'featured',
   wishlistOnly = false,
 }: {
+  /** Passed from the server — client components cannot query Mongo. */
+  products: Product[]
   initialSort?: Sort
   wishlistOnly?: boolean
 }) {
@@ -30,7 +33,7 @@ export function ShopClient({
     if (sort === 'high') sorted.sort((a, b) => b.price - a.price)
     if (sort === 'new') sorted.sort((a, b) => Number(b.badge === 'New') - Number(a.badge === 'New'))
     return sorted
-  }, [fits, sort, wishlistOnly, wishes])
+  }, [fits, sort, wishlistOnly, wishes, products])
 
   const toggleFit = (fit: string) =>
     setFits((prev) => (prev.includes(fit) ? prev.filter((f) => f !== fit) : [...prev, fit]))

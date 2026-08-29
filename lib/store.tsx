@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { getProduct, type Product, type Size } from '@/lib/products'
+import { type Product, type Size } from '@/lib/products'
 
 /* ---------------------------------------------------------------- types -- */
 
@@ -94,17 +94,15 @@ function reducer(state: CartState, action: CartAction): CartState {
 
 /* ---------------------------------------------------------- persistence -- */
 
-function readStorage(): CartState {
+function readStorage(known: (id: string) => boolean): CartState {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return EMPTY
     const parsed = JSON.parse(raw) as Partial<CartState>
     return {
       // Drop anything referencing a product that no longer exists.
-      lines: Array.isArray(parsed.lines)
-        ? parsed.lines.filter((l) => l && getProduct(l.productId))
-        : [],
-      wishes: Array.isArray(parsed.wishes) ? parsed.wishes.filter(getProduct) : [],
+      lines: Array.isArray(parsed.lines) ? parsed.lines.filter((l) => l && known(l.productId)) : [],
+      wishes: Array.isArray(parsed.wishes) ? parsed.wishes.filter(known) : [],
     }
   } catch {
     return EMPTY
@@ -114,6 +112,8 @@ function readStorage(): CartState {
 /* -------------------------------------------------------------- context -- */
 
 export type StoreValue = {
+  /** Catalogue snapshot from the server, shared by cart, search and wishlist. */
+  products: Product[]
   /** False during the first client render, before localStorage is read. */
   hydrated: boolean
   lines: CartLine[]
@@ -135,15 +135,32 @@ export type StoreValue = {
 
 const StoreContext = createContext<StoreValue | null>(null)
 
-export function StoreProvider({ children }: { children: ReactNode }) {
+export function StoreProvider({
+  products,
+  children,
+}: {
+  /**
+   * Catalogue snapshot, passed down from the server.
+   *
+   * The cart lives in the browser and cannot query MongoDB, so it resolves
+   * line items against this rather than importing a hardcoded array.
+   */
+  products: Product[]
+  children: ReactNode
+}) {
   const [state, dispatch] = useReducer(reducer, EMPTY)
   const [hydrated, setHydrated] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
 
+  // Index once; the cart looks products up on every render.
+  const byId = useMemo(() => new Map(products.map((p) => [p.id, p])), [products])
+
   useEffect(() => {
-    dispatch({ type: 'hydrate', state: readStorage() })
+    dispatch({ type: 'hydrate', state: readStorage((id) => byId.has(id)) })
     setHydrated(true)
+    // Only on mount: a later catalogue change must not wipe the saved cart.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -162,10 +179,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<StoreValue>(() => {
     const items = state.lines.flatMap((line) => {
-      const product = getProduct(line.productId)
+      const product = byId.get(line.productId)
       return product ? [{ line, product }] : []
     })
     return {
+      products,
       hydrated,
       lines: state.lines,
       wishes: state.wishes,
@@ -183,7 +201,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       searchOpen,
       setSearchOpen,
     }
-  }, [state, hydrated, cartOpen, searchOpen, add])
+  }, [state, hydrated, cartOpen, searchOpen, add, byId, products])
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }

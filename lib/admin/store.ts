@@ -47,6 +47,15 @@ export async function listActiveProducts(): Promise<AdminProduct[]> {
   return docs as AdminProduct[]
 }
 
+/** A single product, only if customers should see it. */
+export async function getActiveProduct(id: string): Promise<AdminProduct | undefined> {
+  const db = await getDb()
+  const doc = await db
+    .collection<Doc<AdminProduct>>(PRODUCTS)
+    .findOne({ id, status: 'active' }, { projection: { _id: 0 } })
+  return strip(doc)
+}
+
 export async function getAdminProduct(id: string): Promise<AdminProduct | undefined> {
   const db = await getDb()
   const doc = await db

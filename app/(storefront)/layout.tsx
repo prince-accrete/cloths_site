@@ -1,4 +1,5 @@
 import { StoreProvider } from '@/lib/store'
+import { listActiveProducts } from '@/lib/admin/store'
 import { Nav } from '@/components/site/nav'
 import { Footer } from '@/components/site/footer'
 import { CartDrawer } from '@/components/site/cart-drawer'
@@ -15,9 +16,13 @@ import { SmoothScroll } from '@/components/site/smooth-scroll'
  * StoreProvider lives here rather than in the root layout so the cart context
  * and its localStorage effects never load on admin routes.
  */
-export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
+export default async function StorefrontLayout({ children }: { children: React.ReactNode }) {
+  // One query per request, shared by the cart, search and wishlist. Reading the
+  // catalogue here is what makes admin edits show up on the storefront.
+  const products = await listActiveProducts()
+
   return (
-    <StoreProvider>
+    <StoreProvider products={products}>
       <SmoothScroll />
 
       <a href="#main" className="skip-link">

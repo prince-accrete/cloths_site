@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { products } from '@/lib/products'
+import { listActiveProducts } from '@/lib/admin/store'
 import { Hero } from '@/components/site/hero'
 import { Marquee } from '@/components/site/marquee'
 import { Lookbook } from '@/components/site/lookbook'
@@ -9,6 +9,10 @@ import { Newsletter } from '@/components/site/newsletter'
 import { ProductCard } from '@/components/site/product-card'
 import { Lines, Reveal } from '@/components/site/reveal'
 import { StaggerGrid, StaggerItem } from '@/components/site/stagger-grid'
+
+// Prerendered for speed, but rebuilt within a minute of a catalogue change
+// (and immediately when an admin save calls revalidatePath).
+export const revalidate = 60
 
 const FITS = [
   {
@@ -38,7 +42,9 @@ const LEDGER = [
   { term: 'Craft', detail: 'Fair Wear audited' },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await listActiveProducts()
+
   return (
     <>
       <Hero />
