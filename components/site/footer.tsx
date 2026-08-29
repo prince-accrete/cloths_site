@@ -8,15 +8,16 @@ const COLUMNS = [
       { label: 'New arrivals', href: '/shop?sort=new' },
       { label: 'Best sellers', href: '/shop?sort=featured' },
       { label: 'Wishlist', href: '/shop?view=wishlist' },
+      { label: 'Your account', href: '/account' },
     ],
   },
   {
     title: 'Customer care',
     links: [
-      { label: 'Contact', href: '/about' },
-      { label: 'Shipping & returns', href: '/about' },
-      { label: 'Size guide', href: '/about' },
-      { label: 'Fabric care', href: '/about' },
+      { label: 'Contact', href: '/help/contact' },
+      { label: 'Shipping & returns', href: '/help/shipping' },
+      { label: 'Size guide', href: '/help/size-guide' },
+      { label: 'Fabric care', href: '/help/fabric-care' },
     ],
   },
   {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { ArrowRight, Heart, Minus, Plus } from 'lucide-react'
 import { SIZES, type Product, type Size } from '@/lib/products'
 import { useStore } from '@/lib/store'
@@ -27,9 +28,9 @@ export function BuyPanel({ product }: { product: Product }) {
       <div className="field">
         <div className="field__head">
           <span className="eyebrow">Size</span>
-          <button className="link-quiet" type="button">
+          <Link href="/help/size-guide" className="link-quiet">
             Size guide
-          </button>
+          </Link>
         </div>
 
         <div className="size-grid" role="group" aria-label="Choose a size">
@@ -85,7 +86,7 @@ export function BuyPanel({ product }: { product: Product }) {
 
       <div className="pdp__actions">
         <button className="button button--dark" onClick={submit}>
-          Add to bag — ${product.price * qty} <ArrowRight size={15} />
+          Add to bag — ₹{(product.price * qty).toLocaleString('en-IN')} <ArrowRight size={15} />
         </button>
         <button
           className="pdp__wish"

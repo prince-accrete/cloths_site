@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Heart, Menu, Search, ShoppingBag, X } from 'lucide-react'
+import { Heart, Menu, Search, ShoppingBag, UserRound, X } from 'lucide-react'
 import { useStore } from '@/lib/store'
 
 const LINKS = [
@@ -74,6 +74,10 @@ export function Nav() {
           <Link href="/shop?view=wishlist" className="icon-button desktop-only" aria-label="Wishlist">
             <Heart size={18} />
             <span className="count">{hydrated ? wishes.length : 0}</span>
+          </Link>
+
+          <Link href="/account" className="icon-button desktop-only" aria-label="Account">
+            <UserRound size={18} />
           </Link>
 
           <button

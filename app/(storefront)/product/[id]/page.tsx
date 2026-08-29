@@ -66,8 +66,8 @@ export default async function ProductPage({ params }: Params) {
           <p className="lede">{product.tagline}</p>
 
           <div className="pdp__price">
-            <strong>${product.price}</strong>
-            <span className="meta">Duties included</span>
+            <strong>₹{product.price.toLocaleString('en-IN')}</strong>
+            <span className="meta">Inclusive of all taxes</span>
           </div>
 
           <div className="pdp__spec">
@@ -109,8 +109,8 @@ export default async function ProductPage({ params }: Params) {
               </summary>
               <div className="accordion__body">
                 <p>
-                  Complimentary shipping on orders over $150. Returns accepted within 30 days,
-                  unworn and with tags attached.
+                  Free delivery on orders over ₹1,500, and cash on delivery everywhere we
+                  ship. Returns accepted within 30 days, unworn and with tags attached.
                 </p>
               </div>
             </details>

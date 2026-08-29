@@ -28,10 +28,11 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    // The admin is not a self-serve product; leaving sign-up open would let
-    // anyone POST themselves an account. ALLOW_SIGNUP is set only by
-    // scripts/create-admin.mjs, in-process, and is never set in .env.local.
-    disableSignUp: process.env.ALLOW_SIGNUP !== 'true',
+    // Open, because customers need accounts. This is NOT a way into the
+    // admin: `role` below is input:false, so it cannot be set through a
+    // sign-up payload and always starts as 'customer'. Admin accounts exist
+    // only via `npm run create-admin`, which promotes after creating.
+    disableSignUp: false,
     minPasswordLength: 12,
   },
 

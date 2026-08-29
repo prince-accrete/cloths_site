@@ -2390,3 +2390,411 @@ main,
   animation-duration: 480ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* -- 17  Checkout, account & help ----------------------------------------- */
+/* Added when the store gained a real (cash-on-delivery) checkout. Uses the
+   same tokens as everything above — no new colours or curves. */
+
+.co {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+  padding-bottom: var(--section-y);
+}
+
+.co__main {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.co__block {
+  background: var(--paper);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  display: grid;
+  gap: 0.9rem;
+}
+
+.co__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.co-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.co-field input {
+  width: 100%;
+  padding: 0.75rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  background: var(--white);
+  font-size: var(--step-0);
+  transition: border-color var(--dur-hover) var(--ease-out-soft);
+}
+
+.co-field input:hover {
+  border-color: var(--ink-soft);
+}
+
+.co-field[data-invalid='true'] input {
+  border-color: var(--accent);
+}
+
+.co-error {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--accent);
+}
+
+/* Payment options: the disabled one stays visible on purpose, so people can
+   see online payment is coming rather than wondering if it exists. */
+.co__pay {
+  display: flex;
+  align-items: start;
+  gap: 0.8rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+  transition: border-color var(--dur-hover) var(--ease-out-soft);
+}
+
+.co__pay:hover {
+  border-color: var(--ink);
+}
+
+.co__pay:has(input:checked) {
+  border-color: var(--ink);
+  background: var(--paper-alt);
+}
+
+.co__pay[data-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.co__pay[data-disabled='true']:hover {
+  border-color: var(--line-strong);
+}
+
+.co__pay input {
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+}
+
+.co__pay span {
+  display: grid;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.co__pay strong {
+  font-weight: 500;
+  font-size: var(--step-0);
+}
+
+.co__pay em {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.625rem;
+  letter-spacing: var(--track-ui);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.co__pay small {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--muted);
+}
+
+.co__summary {
+  position: sticky;
+  top: 6rem;
+  display: grid;
+  gap: 0.7rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--line);
+  background: var(--paper-alt);
+}
+
+.co__lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.co__lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--step--1);
+}
+
+.co__lines small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--muted);
+}
+
+.co__lines b,
+.co__total b {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.co__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--step--1);
+}
+
+.co__total--muted {
+  border-top: 0;
+  padding-top: 0;
+  color: var(--muted);
+}
+
+.co__total--grand {
+  font-size: var(--step-1);
+}
+
+.co__total--grand b {
+  font-weight: 500;
+}
+
+.co-done {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  padding-bottom: var(--section-y);
+  max-width: 44ch;
+}
+
+.co-done__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+/* Sign in / create account */
+.auth-page {
+  display: grid;
+  place-items: center;
+  min-height: 70svh;
+  padding-block: clamp(6rem, 14vw, 9rem) var(--section-y);
+}
+
+.auth {
+  width: min(24rem, 100%);
+  display: grid;
+  gap: 0.9rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.auth .display {
+  margin-bottom: 0.4rem;
+}
+
+.auth .text-link {
+  justify-self: start;
+}
+
+/* Order receipt */
+.order {
+  max-width: 46rem;
+  padding-bottom: var(--section-y);
+}
+
+.order__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1.25rem;
+  margin: 0 0 2rem;
+  padding-block: 1.25rem;
+  border-block: 1px solid var(--line);
+}
+
+.order__meta dd {
+  margin: 0.35rem 0 0;
+  font-size: var(--step--1);
+  line-height: 1.7;
+}
+
+.order__lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order__lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.order__lines small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--muted);
+}
+
+.order__lines b,
+.order__total strong {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.order__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-block: 1.1rem 2rem;
+}
+
+.order__total strong {
+  font-size: var(--step-1);
+  font-weight: 500;
+}
+
+/* Account — order history */
+.account__orders {
+  margin: 0;
+  padding: 0 0 var(--section-y);
+  list-style: none;
+}
+
+.account__orders a {
+  display: grid;
+  grid-template-columns: 6rem 8rem 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 0.95rem;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--dur-hover) var(--ease-out-soft);
+}
+
+.account__orders a:hover {
+  background: var(--paper-alt);
+}
+
+.account__id,
+.account__when,
+.account__status,
+.account__total {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.account__when,
+.account__status {
+  color: var(--muted);
+}
+
+.account__what {
+  font-size: var(--step--1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Help / customer care */
+.help {
+  max-width: 44rem;
+  display: grid;
+  gap: 2rem;
+  padding-bottom: var(--section-y);
+}
+
+.help__section {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.help__section p {
+  color: var(--ink-soft);
+  max-width: 62ch;
+}
+
+.help__table-wrap {
+  overflow-x: auto;
+}
+
+.help__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.help__table th,
+.help__table td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-weight: 400;
+}
+
+.help__table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: var(--track-ui);
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom-color: var(--line-strong);
+  white-space: nowrap;
+}
+
+.help__table tbody th {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+.help__table td {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 860px) {
+  .co {
+    grid-template-columns: 1fr;
+  }
+
+  .co__summary {
+    position: static;
+  }
+
+  .co__row {
+    grid-template-columns: 1fr;
+  }
+
+  .account__orders a {
+    grid-template-columns: 1fr auto;
+    row-gap: 0.3rem;
+  }
+
+  .account__what {
+    grid-column: 1 / -1;
+    white-space: normal;
+  }
+}

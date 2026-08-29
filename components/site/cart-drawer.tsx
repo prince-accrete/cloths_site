@@ -6,7 +6,7 @@ import { ArrowRight, Minus, Plus, ShoppingBag, X } from 'lucide-react'
 import { useStore } from '@/lib/store'
 import { DialogShell } from './dialog-shell'
 
-const FREE_SHIPPING = 150
+const FREE_SHIPPING = 1500
 
 export function CartDrawer() {
   const { cartOpen, setCartOpen, items, count, subtotal, setQty, remove } = useStore()
@@ -82,7 +82,7 @@ export function CartDrawer() {
                 </div>
 
                 <div className="line-item__side">
-                  <span>${product.price * line.qty}</span>
+                  <span>₹{(product.price * line.qty).toLocaleString('en-IN')}</span>
                   <button
                     className="link-quiet"
                     onClick={() => remove(line.productId, line.size)}
@@ -98,16 +98,16 @@ export function CartDrawer() {
           <div className="drawer__foot">
             <div className="drawer__total">
               <span className="eyebrow">Subtotal</span>
-              <strong>${subtotal}</strong>
+              <strong>₹{subtotal.toLocaleString('en-IN')}</strong>
             </div>
             <p className="meta">
               {remaining > 0
-                ? `$${remaining} from complimentary shipping.`
-                : 'Complimentary shipping unlocked.'}
+                ? `₹${remaining.toLocaleString('en-IN')} from free delivery.`
+                : 'Free delivery unlocked.'}
             </p>
-            <button className="button button--dark button--block">
+            <Link href="/checkout" className="button button--dark button--block" onClick={close}>
               Checkout <ArrowRight size={15} />
-            </button>
+            </Link>
           </div>
         </>
       )}

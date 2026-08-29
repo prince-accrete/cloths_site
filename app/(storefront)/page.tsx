@@ -37,7 +37,7 @@ const FITS = [
 
 const LEDGER = [
   { term: 'Quality', detail: 'Long-staple fibre only' },
-  { term: 'Fabric', detail: 'Milled in Portugal' },
+  { term: 'Fabric', detail: 'Milled in India' },
   { term: 'Fit', detail: 'Four rounds of sampling' },
   { term: 'Craft', detail: 'Fair Wear audited' },
 ]

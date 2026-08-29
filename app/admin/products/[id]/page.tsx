@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { getAdminProduct } from '@/lib/admin/store'
 import { PageHeader } from '@/components/admin/page-header'
 import { ProductForm } from '@/components/admin/product-form'
+import { NewProductForm } from '@/components/admin/new-product-form'
 import { requireAdmin } from '@/lib/auth-guard'
 
 // Reads MongoDB per request — never prerendered at build time.
@@ -23,21 +24,20 @@ export default async function AdminProductPage({ params }: Params) {
 
   const { id } = await params
 
-  // `/admin/products/new` is reserved for the create flow, which needs a
-  // storage provider before it can do anything honest.
   if (id === 'new') {
     return (
       <>
-        <PageHeader eyebrow="Catalogue" title="New product" />
-        <section className="admin-panel">
-          <div className="admin-empty">
-            Creating products needs a database and an image store. Neither is wired
-            up yet — edit an existing product instead.
-            <Link href="/admin/products" className="admin-link">
-              Back to products
+        <PageHeader
+          eyebrow="Catalogue"
+          title="New product"
+          meta="Images are URLs — no storage provider is wired up yet"
+          action={
+            <Link href="/admin/products" className="admin-button">
+              <ArrowLeft size={14} aria-hidden="true" /> Back
             </Link>
-          </div>
-        </section>
+          }
+        />
+        <NewProductForm />
       </>
     )
   }

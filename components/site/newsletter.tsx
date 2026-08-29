@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowRight, Check } from 'lucide-react'
+import { useActionState } from 'react'
+import { ArrowRight, Check, Loader2 } from 'lucide-react'
+import { subscribeAction } from '@/lib/shop/actions'
 import { Lines, Reveal } from './reveal'
 
 export function Newsletter() {
-  const [done, setDone] = useState(false)
+  const [state, formAction, pending] = useActionState(subscribeAction, { ok: false, message: '' })
 
   return (
     <section className="section section--tight shell newsletter">
@@ -17,18 +18,12 @@ export function Newsletter() {
         <Lines lines={['Join the world', <em key="e">of Still Fits.</em>]} />
       </h2>
 
-      {done ? (
+      {state.ok ? (
         <p className="newsletter__ok" role="status">
-          <Check size={17} /> You’re on the list.
+          <Check size={17} /> {state.message}
         </p>
       ) : (
-        <form
-          className="newsletter__form"
-          onSubmit={(e) => {
-            e.preventDefault()
-            setDone(true)
-          }}
-        >
+        <form className="newsletter__form" action={formAction}>
           <label htmlFor="newsletter-email" className="sr-only">
             Email address
           </label>
@@ -40,8 +35,9 @@ export function Newsletter() {
             autoComplete="email"
             placeholder="Your email address"
           />
-          <button type="submit" className="button button--dark">
-            Subscribe <ArrowRight size={15} />
+          <button type="submit" className="button button--dark" disabled={pending}>
+            {pending ? 'Joining…' : 'Subscribe'}
+            {pending ? <Loader2 size={15} className="admin-spin" /> : <ArrowRight size={15} />}
           </button>
         </form>
       )}

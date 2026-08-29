@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: 'Settings' }
 
 const ROWS = [
   { label: 'Store name', value: 'Still Fits' },
-  { label: 'Currency', value: 'USD — duties included' },
-  { label: 'Free shipping threshold', value: '$150' },
+  { label: 'Currency', value: 'INR — inclusive of all taxes' },
+  { label: 'Free delivery threshold', value: '₹1,500' },
   { label: 'Returns window', value: '30 days' },
   { label: 'Low stock threshold', value: '6 units' },
 ]

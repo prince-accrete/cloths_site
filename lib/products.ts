@@ -22,7 +22,7 @@ export const products: Product[] = [
   {
     id: 'heavyweight',
     name: 'The Heavyweight Tee',
-    price: 68,
+    price: 1899,
     fit: 'Regular Fit',
     color: 'Bone',
     swatch: '#e3ddd0',
@@ -52,7 +52,7 @@ export const products: Product[] = [
   {
     id: 'everyday',
     name: 'The Everyday Tee',
-    price: 54,
+    price: 1299,
     fit: 'Relaxed Fit',
     color: 'Optic White',
     swatch: '#f6f4ef',
@@ -81,7 +81,7 @@ export const products: Product[] = [
   {
     id: 'studio',
     name: 'The Studio Tee',
-    price: 62,
+    price: 1699,
     fit: 'Oversized',
     color: 'Washed Black',
     swatch: '#2a2825',
@@ -111,7 +111,7 @@ export const products: Product[] = [
   {
     id: 'pima',
     name: 'The Pima Tee',
-    price: 58,
+    price: 1599,
     fit: 'Regular Fit',
     color: 'Oat',
     swatch: '#d9cfbb',
@@ -140,7 +140,7 @@ export const products: Product[] = [
   {
     id: 'ribbed',
     name: 'The Ribbed Tee',
-    price: 56,
+    price: 1499,
     fit: 'Relaxed Fit',
     color: 'Moss',
     swatch: '#6b7358',
@@ -170,7 +170,7 @@ export const products: Product[] = [
   {
     id: 'essential',
     name: 'The Essential Tee',
-    price: 52,
+    price: 1199,
     fit: 'Regular Fit',
     color: 'Charcoal',
     swatch: '#57554f',

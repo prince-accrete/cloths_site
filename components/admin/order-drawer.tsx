@@ -139,7 +139,7 @@ export function OrderDrawer({
                           Size {line.size} · Qty {line.qty}
                         </span>
                       </div>
-                      <span className="admin-line__price">${line.unitPrice * line.qty}</span>
+                      <span className="admin-line__price">₹{(line.unitPrice * line.qty).toLocaleString('en-IN')}</span>
                     </li>
                   )
                 })}
@@ -147,7 +147,7 @@ export function OrderDrawer({
 
               <div className="admin-drawer__total">
                 <span className="admin-eyebrow">Total</span>
-                <strong>${orderTotal(order)}</strong>
+                <strong>₹{orderTotal(order).toLocaleString('en-IN')}</strong>
               </div>
             </div>
 

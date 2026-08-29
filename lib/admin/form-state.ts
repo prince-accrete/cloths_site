@@ -11,6 +11,8 @@ export type FormState = {
   message: string
   /** Field name → error, rendered next to the input it belongs to. */
   errors: Record<string, string>
+  /** Set by createProductAction so the form can redirect to the new product. */
+  createdId?: string
 }
 
 export const EMPTY_FORM_STATE: FormState = { ok: false, message: '', errors: {} }

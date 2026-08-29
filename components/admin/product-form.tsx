@@ -66,7 +66,7 @@ export function ProductForm({ product }: { product: AdminProduct }) {
           </Field>
 
           <div className="admin-form__row">
-            <Field label="Price (USD)" htmlFor="price" error={state.errors.price}>
+            <Field label="Price (INR)" htmlFor="price" error={state.errors.price}>
               <input
                 id="price"
                 name="price"

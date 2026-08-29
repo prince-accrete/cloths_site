@@ -29,7 +29,7 @@ const columns: Column<Row>[] = [
     align: 'end',
     numeric: true,
     width: '132px',
-    cell: (c) => `$${c.spent}`,
+    cell: (c) => `₹${c.spent.toLocaleString('en-IN')}`,
   },
 ]
 

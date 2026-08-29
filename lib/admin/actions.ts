@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { SIZES, type Size } from '@/lib/products'
-import { setOrderStatus, updateProduct, type ProductPatch } from './store'
+import { createProduct, setOrderStatus, updateProduct, type ProductPatch } from './store'
 import type { Inventory, OrderStatus, ProductStatus } from './types'
 // A 'use server' module may only export async functions, so the state shape
 // and its initial value live in a plain module.
@@ -98,6 +98,87 @@ export async function saveProductAction(
   revalidatePath('/', 'layout')
 
   return { ok: true, message: `Saved “${saved.name}”.`, errors: {} }
+}
+
+/**
+ * Creates a product.
+ *
+ * Images are URLs, not uploads — there is no storage provider wired up, and a
+ * fake upload button that silently does nothing is worse than an honest URL
+ * field. Swapping this for real uploads later touches only this action and the
+ * two inputs in the form.
+ */
+export async function createProductAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  if (!(await getAdminSession())) {
+    return { ok: false, message: 'Not authorised.', errors: {} }
+  }
+
+  const errors: Record<string, string> = {}
+  const get = (k: string) => String(formData.get(k) ?? '').trim()
+
+  const name = get('name')
+  if (name.length < 2) errors.name = 'Name must be at least 2 characters.'
+
+  const price = Number(get('price'))
+  if (!Number.isFinite(price) || price <= 0) errors.price = 'Enter a price greater than zero.'
+
+  const fit = get('fit') as ProductPatch['fit']
+  if (!FITS.includes(fit)) errors.fit = 'Choose a fit.'
+
+  const color = get('color')
+  if (!color) errors.color = 'Colour is required.'
+  const fabric = get('fabric')
+  if (!fabric) errors.fabric = 'Fabric is required.'
+
+  const images: { src: string; alt: string }[] = []
+  for (const i of [1, 2]) {
+    const src = get(`image${i}`)
+    if (!src) {
+      if (i === 1) errors.image1 = 'At least one image is required.'
+      continue
+    }
+    if (!/^https:\/\/images\.unsplash\.com\//.test(src)) {
+      // next.config.mjs only allows this host, so anything else renders broken.
+      errors[`image${i}`] = 'Must be an https://images.unsplash.com/ URL.'
+      continue
+    }
+    images.push({ src, alt: get(`alt${i}`) || `${name} product photograph` })
+  }
+
+  const inventory: Inventory = {}
+  for (const size of SIZES) {
+    if (formData.get(`carry-${size}`) !== 'on') continue
+    const qty = Number(String(formData.get(`qty-${size}`) ?? '0'))
+    if (Number.isFinite(qty) && qty >= 0) inventory[size as Size] = Math.floor(qty)
+  }
+  if (Object.keys(inventory).length === 0) errors.inventory = 'Carry at least one size.'
+
+  if (Object.keys(errors).length > 0) {
+    return { ok: false, message: 'Fix the highlighted fields.', errors }
+  }
+
+  const result = await createProduct({
+    name,
+    price,
+    fit,
+    color,
+    fabric,
+    tagline: get('tagline'),
+    description: get('description'),
+    status: (get('status') || 'draft') as ProductStatus,
+    inventory,
+    images,
+  })
+
+  if (!result.ok) return { ok: false, message: result.reason, errors: {} }
+
+  revalidatePath('/admin/products')
+  revalidatePath('/', 'layout')
+
+  return { ok: true, message: `Created “${result.product.name}”.`, errors: {}, createdId: result.product.id }
 }
 
 export async function setOrderStatusAction(formData: FormData) {

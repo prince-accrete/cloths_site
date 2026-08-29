@@ -86,7 +86,7 @@ export function SearchOverlay() {
                   {p.name}
                   <span className="meta"> — {p.color}</span>
                 </span>
-                <span>${p.price}</span>
+                <span>₹{p.price.toLocaleString('en-IN')}</span>
               </Link>
             ))}
             {results.length === 0 && (

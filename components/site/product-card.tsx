@@ -67,7 +67,7 @@ export function ProductCard({
             {product.color} · {product.fit}
           </p>
         </div>
-        <span className="product-card__price">${product.price}</span>
+        <span className="product-card__price">₹{product.price.toLocaleString('en-IN')}</span>
       </div>
     </article>
   )

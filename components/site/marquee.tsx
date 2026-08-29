@@ -1,9 +1,9 @@
 const ITEMS = [
-  'Complimentary shipping over $150',
+  'Free delivery over ₹1,500',
   '30-day returns, no questions',
   'Organic & recycled fibres',
   'Fair Wear audited factories',
-  'Made for the long run',
+  'Cash on delivery available',
 ]
 
 /**

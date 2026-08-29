@@ -22,12 +22,32 @@ export type OrderLine = {
   unitPrice: number
 }
 
+export type PaymentMethod = 'cod' | 'online'
+
+export type Address = {
+  line1: string
+  line2?: string
+  city: string
+  state: string
+  pincode: string
+  phone: string
+}
+
 export type Order = {
   id: string
   placedAt: string
   customer: { name: string; email: string }
+  /** Set when the buyer was signed in; guest orders have none. */
+  userId?: string
+  address?: Address
+  payment?: { method: PaymentMethod; status: 'pending' | 'paid' }
   status: OrderStatus
   lines: OrderLine[]
+}
+
+export const PAYMENT_LABEL: Record<PaymentMethod, string> = {
+  cod: 'Cash on delivery',
+  online: 'Online payment',
 }
 
 /** Traffic-light tone per status — one mapping, used by every view. */

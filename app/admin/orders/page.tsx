@@ -57,7 +57,7 @@ const columns: Column<Order>[] = [
     align: 'end',
     numeric: true,
     width: '92px',
-    cell: (o) => `$${orderTotal(o)}`,
+    cell: (o) => `₹${orderTotal(o).toLocaleString('en-IN')}`,
   },
   {
     key: 'status',

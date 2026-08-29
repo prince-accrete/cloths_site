@@ -20,7 +20,7 @@ const PRINCIPLES = [
   {
     term: 'Fibre first',
     detail:
-      'Long-staple cotton, milled in Portugal. Short fibres pill and thin; long ones soften and stay. It costs more and it lasts longer.',
+      'Long-staple cotton, milled in India. Short fibres pill and thin; long ones soften and stay. It costs more and it lasts longer.',
   },
   {
     term: 'Fit as a discipline',

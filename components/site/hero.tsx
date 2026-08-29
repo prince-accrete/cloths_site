@@ -59,7 +59,7 @@ export function Hero() {
         </div>
         <div>
           <dt>Made in</dt>
-          <dd>Portugal</dd>
+          <dd>India</dd>
         </div>
       </dl>
 

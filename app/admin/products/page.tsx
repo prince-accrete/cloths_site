@@ -55,7 +55,7 @@ const columns: Column<AdminProduct>[] = [
     align: 'end',
     numeric: true,
     width: '92px',
-    cell: (p) => `$${p.price}`,
+    cell: (p) => `₹${p.price.toLocaleString('en-IN')}`,
   },
   {
     key: 'inventory',

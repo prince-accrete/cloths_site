@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = { title: 'Dashboard' }
 
-const money = (n: number) => `$${n.toLocaleString('en-US')}`
+const money = (n: number) => `₹${n.toLocaleString('en-IN')}`
 
 const when = (iso: string) =>
   new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
