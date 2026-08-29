@@ -8,8 +8,8 @@ export function Hero() {
     <section className="hero shell">
       <div className="hero__media">
         <Image
-          src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=2400&q=90"
-          alt="A bone white t-shirt hung against a dark concrete wall"
+          src="https://images.unsplash.com/photo-1754473313147-969e4a5ca743?w=2400&q=90"
+          alt="A man wearing a washed black Still Fits t-shirt, lit against a dark studio backdrop"
           fill
           sizes="100vw"
           priority
